@@ -38,21 +38,21 @@ p, a, li {
 
 
 
-/* Ensure perspective and 3D transformations are set correctly */
-.perspective {
-  perspective: 1000px;
+/* Ensure cards have the proper 3D flip effect */
+.preserve-3d {
+  transform-style: preserve-3d;
 }
 
-.transform-style {
-  transform-style: preserve-3d;
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-0 {
+  transform: rotateY(0deg);
 }
 
 .rotate-y-180 {
   transform: rotateY(180deg);
-}
-
-.backface-visibility-hidden {
-  backface-visibility: hidden;
 }
 
 .truncate {

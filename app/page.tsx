@@ -12,14 +12,16 @@ export default function Home() {
 
         <Link href="/contact"
           className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition duration-300 transform hover:scale-105">
-            Get in Touch Today
+          Get in Touch Today
         </Link>
 
       </main>
 
-      <main className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-100 pt-8"> {/* Decreased top margin */}
+      <main className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-100 pt-8">
         <h1 className="text-4xl font-bold mb-6">Loan Programs I Work With</h1>
-        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
+        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-10 p-2 w-full max-w-8xl">
+          {/* Adjusted grid for medium screens */}
           <LoanCard
             loanName="Conventional Loan"
             loanDescription="A mortgage loan that is not backed by a government agency. Ideal for borrowers with good credit and a stable income."
@@ -54,7 +56,7 @@ export default function Home() {
           />
           <LoanCard
             loanName="Home Equity Line of Credit"
-            loanDescription= "a revolving credit line secured by your home's equity, allowing you to borrow funds as needed up to a set limit."
+            loanDescription="a revolving credit line secured by your home's equity, allowing you to borrow funds as needed up to a set limit."
           />
 
         </section>

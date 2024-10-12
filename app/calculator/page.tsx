@@ -13,6 +13,7 @@ import {
   Legend,
 } from 'chart.js';
 
+// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -65,34 +66,34 @@ function MortgageCalculator() {
   const [interestRate, setInterestRate] = useState("");
   const [loanTerm, setLoanTerm] = useState("");
   const [monthlyPayment, setMonthlyPayment] = useState(null);
-  const [amortizationSchedule, setAmortizationSchedule] = useState([]);  
-  const [chartData, setChartData] = useState(null);  
+  const [amortizationSchedule, setAmortizationSchedule] = useState([]);
+  const [chartData, setChartData] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const calculateMortgage = (e) => {
+  // Handle form submission and validation
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (
-      parseFloat(purchasePrice) <= 0 ||
-      parseFloat(downPayment) < 0 ||
-      parseFloat(interestRate) <= 0 ||
-      parseFloat(loanTerm) <= 0
-    ) {
-      setErrorMessage("Please ensure all values are positive and valid.");
+    if (parseFloat(purchasePrice) <= 0) {
+      setErrorMessage("Please enter a valid purchase price greater than zero.");
       return;
-    } else {
-      setErrorMessage("");
     }
+    if (parseFloat(interestRate) <= 0 || parseFloat(interestRate) > 100) {
+      setErrorMessage("Please enter an interest rate between 0% and 100%.");
+      return;
+    }
+    if (parseFloat(loanTerm) <= 0) {
+      setErrorMessage("Please enter a valid loan term greater than zero.");
+      return;
+    }
+    // No errors, proceed with calculation
+    setErrorMessage("");  // Clear any existing errors
+    calculateMortgage();
+  };
 
+  // Calculate mortgage details
+  const calculateMortgage = () => {
     const price = parseFloat(purchasePrice);
-    let downPaymentValue = 0;
-
-    if (downPaymentType === "percentage") {
-      downPaymentValue = price * (parseFloat(downPayment) / 100);
-    } else {
-      downPaymentValue = parseFloat(downPayment);
-    }
-
+    let downPaymentValue = downPaymentType === "percentage" ? price * (parseFloat(downPayment) / 100) : parseFloat(downPayment);
     const loanAmount = price - downPaymentValue;
     const rate = parseFloat(interestRate) / 100 / 12;
     const term = parseInt(loanTerm) * 12;
@@ -100,15 +101,16 @@ function MortgageCalculator() {
     const M = (loanAmount * rate * Math.pow(1 + rate, term)) / (Math.pow(1 + rate, term) - 1);
     setMonthlyPayment(M.toFixed(2));
 
-    // Generate the amortization schedule
+    // Generate amortization schedule
     const schedule = generateAmortizationSchedule(loanAmount, M, rate, term);
     setAmortizationSchedule(schedule);
 
-    // Generate chart data based on the schedule
+    // Generate chart data
     const chartData = generateChartData(schedule);
     setChartData(chartData);
   };
 
+  // Generate amortization schedule
   const generateAmortizationSchedule = (loanAmount, monthlyPayment, monthlyRate, totalPayments) => {
     let balance = loanAmount;
     const schedule = [];
@@ -129,6 +131,7 @@ function MortgageCalculator() {
     return schedule;
   };
 
+  // Generate chart data for visualization
   const generateChartData = (schedule) => {
     const labels = schedule.map((item) => `Month ${item.month}`);
     const principalData = schedule.map((item) => parseFloat(item.principalPayment));
@@ -157,7 +160,7 @@ function MortgageCalculator() {
 
   return (
     <div className="w-full max-w-2xl bg-white shadow-lg rounded-lg p-6">
-      <form onSubmit={calculateMortgage} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* Purchase Price */}
         <div>
           <label className="block text-sm font-medium">Purchase Price</label>
@@ -238,8 +241,10 @@ function MortgageCalculator() {
         </div>
       </form>
 
+      {/* Error message display */}
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-      
+
+      {/* Chart visualization */}
       {chartData && (
         <div className="mt-6">
           <h3 className="text-lg font-bold mb-4">Principal vs. Interest Over Time</h3>
@@ -247,25 +252,26 @@ function MortgageCalculator() {
         </div>
       )}
 
+      {/* Amortization Schedule */}
       {amortizationSchedule.length > 0 && (
         <div className="mt-6 max-h-64 overflow-y-auto">
           <h3 className="text-lg font-bold mb-4">Amortization Schedule</h3>
-          <table className="w-full table-auto">
+          <table className="w-full table-auto text-left">
             <thead>
               <tr>
-                <th>Month</th>
-                <th>Interest Payment</th>
-                <th>Principal Payment</th>
-                <th>Remaining Balance</th>
+                <th className="px-4 py-2">Month</th>
+                <th className="px-4 py-2">Interest Payment</th>
+                <th className="px-4 py-2">Principal Payment</th>
+                <th className="px-4 py-2">Remaining Balance</th>
               </tr>
             </thead>
             <tbody>
               {amortizationSchedule.map((row, index) => (
                 <tr key={index}>
-                  <td>{row.month}</td>
-                  <td>{row.interestPayment}</td>
-                  <td>{row.principalPayment}</td>
-                  <td>{row.balance}</td>
+                  <td className="px-4 py-2">{row.month}</td>
+                  <td className="px-4 py-2">{row.interestPayment}</td>
+                  <td className="px-4 py-2">{row.principalPayment}</td>
+                  <td className="px-4 py-2">{row.balance}</td>
                 </tr>
               ))}
             </tbody>
@@ -273,6 +279,7 @@ function MortgageCalculator() {
         </div>
       )}
 
+      {/* Monthly Payment Result */}
       {monthlyPayment && (
         <div className="mt-4">
           <h2 className="text-xl">Estimated Monthly Payment (Principal and Interest Only): ${monthlyPayment}</h2>
@@ -334,18 +341,20 @@ function AffordabilityCalculator() {
             min="0"
           />
         </div>
-        <div >
-        <p className="text-sm mt-2 mb-4">
-          Debt obligations generally include:
-          <ul className="list-disc ml-6">
-            <li>Credit card payments</li>
-            <li>Car loans or leases</li>
-            <li>Student loans</li>
-            <li>Personal loans</li>
-            <li>Alimony or child support</li>
-            <li>Other long-term obligations (e.g., medical debt)</li>
-          </ul>
-        </p>
+
+        {/* Debt Obligations List */}
+        <div>
+          <p className="text-sm mt-2 mb-4">
+            Debt obligations generally include:
+            <ul className="list-disc ml-6">
+              <li>Credit card payments</li>
+              <li>Car loans or leases</li>
+              <li>Student loans</li>
+              <li>Personal loans</li>
+              <li>Alimony or child support</li>
+              <li>Other long-term obligations (e.g., medical debt)</li>
+            </ul>
+          </p>
         </div>
 
         <div className="sm:col-span-2">
@@ -358,8 +367,10 @@ function AffordabilityCalculator() {
         </div>
       </form>
 
+      {/* Error message display */}
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-      
+
+      {/* Affordable Loan Result */}
       {affordableLoan && (
         <div className="mt-4">
           <h2 className="text-xl">Maximum Affordable Loan Payment: ${affordableLoan}</h2>
@@ -368,6 +379,7 @@ function AffordabilityCalculator() {
     </div>
   );
 }
+
 
 
 
