@@ -44,10 +44,10 @@ export default function Home() {
           />
           <LoanCard
             loanName="Non QM"
-            loanDescription="is designed for borrowers with irregular income, high debt-to-income ratios, or self-employed individuals. It’s ideal for borrowers who don't fit the standard guidelines for conventional loans but still have the means to repay"
+            loanDescription="Designed for borrowers with irregular income or self-employed individuals. It’s ideal for borrowers who don't fit the standard guidelines for conventional loans but still have the means to repay"
           />
           <LoanCard
-            loanName="Dmobile/manufactured"
+            loanName="Mobile/manufactured"
             loanDescription="It's for buyers purchasing mobile or manufactured homes, with or without land, offering a more affordable housing option than traditional homes."
           />
           <LoanCard
@@ -57,6 +57,10 @@ export default function Home() {
           <LoanCard
             loanName="Home Equity Line of Credit"
             loanDescription="a revolving credit line secured by your home's equity, allowing you to borrow funds as needed up to a set limit."
+          />
+          <LoanCard
+            loanName="ITIN"
+            loanDescription="An ITIN loan is a mortgage for borrowers with an Individual Taxpayer Identification Number, typically non-U.S. citizens without Social Security numbers,"
           />
 
         </section>
