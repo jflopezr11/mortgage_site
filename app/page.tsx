@@ -1,101 +1,68 @@
-import Image from "next/image";
+import LoanCard from '@/components/LoanCard';  // Adjusted path to point to the correct folder
+import { useState } from 'react';
+import Link from 'next/link'; // Import the Next.js Link component
+
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div> {/* Wrap everything inside a div */}
+      <main className="flex flex-col items-center justify-center h-screen text-center bg-blue-100  pb-8"> {/* Decreased bottom margin */}
+        <h1 className="text-5xl font-bold mb-4 text-blue-900">Welcome! I’m Joshua Lopez, NMLS #2230624</h1>
+        <p className="text-lg text-blue-700 mb-6">Helping you navigate the mortgage process with confidence and clarity.</p>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+        <Link href="/contact"
+          className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition duration-300 transform hover:scale-105">
+            Get in Touch Today
+        </Link>
+
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+      <main className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-100 pt-8"> {/* Decreased top margin */}
+        <h1 className="text-4xl font-bold mb-6">Loan Programs I Work With</h1>
+        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <LoanCard
+            loanName="Conventional Loan"
+            loanDescription="A mortgage loan that is not backed by a government agency. Ideal for borrowers with good credit and a stable income."
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          <LoanCard
+            loanName="FHA Loan"
+            loanDescription="Backed by the Federal Housing Administration, this loan is popular among first-time homebuyers with low down payment options."
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+          <LoanCard
+            loanName="VA Loan"
+            loanDescription="Available to veterans and active-duty service members, offering benefits like no down payment and no mortgage insurance."
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <LoanCard
+            loanName="Down Payment Assistance"
+            loanDescription="Finance all of your down payment and closing cost. Out pocket cost minimal"
+          />
+          <LoanCard
+            loanName="Jumbo"
+            loanDescription="A mortgage that exceeds conforming loan limits designed for borrowers with higher incomes and strong credit who need to finance properties beyond standard loan caps."
+          />
+          <LoanCard
+            loanName="Non QM"
+            loanDescription="is designed for borrowers with irregular income, high debt-to-income ratios, or self-employed individuals. It’s ideal for borrowers who don't fit the standard guidelines for conventional loans but still have the means to repay"
+          />
+          <LoanCard
+            loanName="Dmobile/manufactured"
+            loanDescription="It's for buyers purchasing mobile or manufactured homes, with or without land, offering a more affordable housing option than traditional homes."
+          />
+          <LoanCard
+            loanName="Down Payment Assistance"
+            loanDescription="For borrowers who have an Individual Taxpayer Identification Number (ITIN) instead of a Social Security number. It’s typically used by non-U.S. citizens"
+          />
+          <LoanCard
+            loanName="Home Equity Line of Credit"
+            loanDescription= "a revolving credit line secured by your home's equity, allowing you to borrow funds as needed up to a set limit."
+          />
+
+        </section>
+      </main>
     </div>
   );
 }
+
+
+
+
