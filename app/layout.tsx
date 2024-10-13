@@ -4,6 +4,18 @@ import Link from 'next/link';
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        {/* Meta Tags for SEO */}
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Mortgage solutions for home buyers. Helping clients in all mortgage loan programs including FHA, VA, Conventional, and more." />
+        <meta name="keywords" content="mortgage loans, home buying, FHA, VA loans, conventional loans, mortgage solutions" />
+        <meta name="author" content="Joshua Lopez" />
+        <meta name="robots" content="index, follow" />
+        <title>Joshua Lopez - Mortgage Loan Officer</title>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+
       <body className="flex flex-col min-h-screen">
         {/* Header Section */}
         <header className="bg-blue-900 text-white p-4">
@@ -45,5 +57,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-
-
