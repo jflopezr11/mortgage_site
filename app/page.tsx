@@ -1,12 +1,39 @@
+"use client";
+
 import LoanCard from '@/components/LoanCard';  // Adjusted path to point to the correct folder
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link'; // Import the Next.js Link component
 
 
 export default function Home() {
+
+  useEffect(() => {
+    const heroSection = document.querySelector('.hero-section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          heroSection.classList.add('animate'); // Add the 'animate' class when in view
+        } else {
+          heroSection.classList.remove('animate'); // Optionally remove if out of view
+        }
+      });
+    });
+
+    if (heroSection) {
+      observer.observe(heroSection);
+    }
+
+    return () => {
+      if (heroSection) {
+        observer.unobserve(heroSection);
+      }
+    };
+  }, []);
+
+
   return (
     <div> {/* Wrap everything inside a div */}
-      <main className="flex flex-col items-center justify-center h-screen text-center bg-blue-100  pb-8"> {/* Decreased bottom margin */}
+      <main className="hero-section flex flex-col items-center justify-center h-screen text-center bg-blue-100  pb-8"> {/* Decreased bottom margin */}
         <h1 className="text-5xl font-bold mb-4 text-blue-900">Welcome! I’m Joshua Lopez, NMLS #2230624</h1>
         <p className="text-lg text-blue-700 mb-6">Helping you navigate the mortgage process with confidence and clarity.</p>
 

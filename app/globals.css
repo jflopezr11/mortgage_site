@@ -62,3 +62,48 @@ p, a, li {
   -webkit-line-clamp: 3; /* Limit the text to 3 lines */
   -webkit-box-orient: vertical;
 }
+
+/* CSS for fade-in and slide-in animation */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-section {
+  opacity: 0; /* Start invisible */
+  transition: opacity 0.5s ease-out;
+}
+
+.hero-section.animate {
+  opacity: 1;
+  animation: fadeInUp 1s ease-out;
+}
+
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.loan-card {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.loan-card.animate {
+  opacity: 1;
+  animation: fadeInScale 0.8s ease-out;
+}

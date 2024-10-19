@@ -37,6 +37,11 @@ export default function RootLayout({ children }) {
                   Mortgage Calculator
                 </Link>
               </li>
+              <li>
+                <Link href="/blog" className="hover:text:-blue-300">
+                  Visit My Blog
+                </Link>
+              </li>
             </ul>
           </nav>
         </header>
