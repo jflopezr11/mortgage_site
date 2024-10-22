@@ -1,7 +1,11 @@
-import "./globals.css";
+"use client";
+import { useState } from 'react';
 import Link from 'next/link';
+import "./globals.css";
 
 export default function RootLayout({ children }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <html lang="en">
       <head>
@@ -19,30 +23,51 @@ export default function RootLayout({ children }) {
       <body className="flex flex-col min-h-screen">
         {/* Header Section */}
         <header className="bg-blue-900 text-white p-4">
-          <nav className="flex justify-between items-center container mx-auto">
+          <nav className="container mx-auto flex justify-between items-center">
             <h1 className="text-xl font-bold">Joshua Lopez</h1>
-            <ul className="flex space-x-4">
+
+            {/* Mobile Hamburger Icon */}
+            <div className="block sm:hidden">
+              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white focus:outline-none">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+              </button>
+            </div>
+
+            {/* Desktop Menu */}
+            <ul className="hidden sm:flex space-x-4">
               <li>
-                <Link href="/" className="hover:text-blue-300">
-                  Home
-                </Link>
+                <Link href="/" className="hover:text-blue-300">Home</Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-blue-300">
-                  Contact
-                </Link>
+                <Link href="/contact" className="hover:text-blue-300">Contact</Link>
               </li>
               <li>
-                <Link href="/calculator" className="hover:text-blue-300">
-                  Mortgage Calculator
-                </Link>
+                <Link href="/calculator" className="hover:text-blue-300">Mortgage Calculator</Link>
               </li>
               <li>
-                <Link href="/blog" className="hover:text:-blue-300">
-                  Visit My Blog
-                </Link>
+                <Link href="/blog" className="hover:text-blue-300">Visit My Blog</Link>
               </li>
             </ul>
+
+            {/* Mobile Menu (Visible only when the hamburger is clicked) */}
+            <div className={`sm:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
+              <ul className="space-y-2">
+                <li>
+                  <Link href="/" className="hover:text-blue-300 block">Home</Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="hover:text-blue-300 block">Contact</Link>
+                </li>
+                <li>
+                  <Link href="/calculator" className="hover:text-blue-300 block">Mortgage Calculator</Link>
+                </li>
+                <li>
+                  <Link href="/blog" className="hover:text-blue-300 block">Visit My Blog</Link>
+                </li>
+              </ul>
+            </div>
           </nav>
         </header>
 

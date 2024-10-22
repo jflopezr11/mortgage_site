@@ -3,6 +3,7 @@
 import LoanCard from '@/components/LoanCard';  // Adjusted path to point to the correct folder
 import { useState, useEffect } from 'react';
 import Link from 'next/link'; // Import the Next.js Link component
+import Head from 'next/head'
 
 
 export default function Home() {
@@ -30,8 +31,42 @@ export default function Home() {
     };
   }, []);
 
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "MortgageBroker",
+    "name": "Joshua Lopez - Mortgage Specialist",
+    "url": "https://www.yourwebsite.com",
+    "logo": "https://www.yourwebsite.com/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+1-123-456-7890",
+      "contactType": "Customer Service"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "123 Main St",
+      "addressLocality": "Los Angeles",
+      "addressRegion": "CA",
+      "postalCode": "90001",
+      "addressCountry": "US"
+    },
+    "sameAs": [
+      "https://www.facebook.com/yourpage",
+      "https://www.linkedin.com/in/yourprofile"
+    ]
+  };
+
 
   return (
+  <>
+    <Head>
+        <title>Joshua Lopez - Mortgage Specialist | NMLS #2230624</title>
+        <meta name="description" content="Helping you navigate the mortgage process with confidence and clarity." />
+        <meta name="keywords" content="homeloans near me,mortgage, loans, refinance, home buying, VA loan, FHA loan, conventional loan, buying a home" />
+        <script type="application/ld+json">
+          {JSON.stringify(localBusinessSchema)}
+        </script>
+    </Head>
     <div> {/* Wrap everything inside a div */}
       <main className="hero-section flex flex-col items-center justify-center h-screen text-center bg-blue-100  pb-8"> {/* Decreased bottom margin */}
         <h1 className="text-5xl font-bold mb-4 text-blue-900">Welcome! I’m Joshua Lopez, NMLS #2230624</h1>
@@ -93,6 +128,7 @@ export default function Home() {
         </section>
       </main>
     </div>
+    </>
   );
 }
 

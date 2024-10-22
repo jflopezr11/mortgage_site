@@ -13,6 +13,8 @@ import {
   Legend,
 } from 'chart.js';
 
+import Head from 'next/head';
+
 // Register Chart.js components
 ChartJS.register(
   CategoryScale,
@@ -32,29 +34,38 @@ export default function CalculatorTabs() {
   };
 
   return (
-    <div className="flex flex-col items-center mt-10">
-      <h1 className="text-3xl font-bold mb-8">Mortgage and Affordability Calculators</h1>
+    <>
+      <Head>
+        <title>Mortgage Calculator - Estimate Your Loan Payments</title>
+        <meta name="description" content="Use our mortgage calculator to estimate your monthly mortgage payments based on loan amount, interest rate, and loan term." />
+        <meta name="keywords" content="mortgage calculator, home loan, loan payments, mortgage estimate" />
+      </Head>
+      <div className="flex flex-col items-center mt-10">
+        <h1 className="text-3xl font-bold mb-8">Mortgage and Affordability Calculators</h1>
 
-      {/* Tab navigation */}
-      <div className="flex space-x-4 mb-8">
-        <button
-          onClick={() => handleTabClick("mortgage")}
-          className={`p-3 ${activeTab === "mortgage" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
-        >
-          Mortgage Calculator
-        </button>
-        <button
-          onClick={() => handleTabClick("affordability")}
-          className={`p-3 ${activeTab === "affordability" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
-        >
-          Affordability Calculator
-        </button>
+        {/* Tab navigation */}
+        <div className="flex space-x-4 mb-8">
+          <button
+            onClick={() => handleTabClick("mortgage")}
+            className={`p-3 ${activeTab === "mortgage" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
+          >
+            Mortgage Calculator
+          </button>
+          <button
+            onClick={() => handleTabClick("affordability")}
+            className={`p-3 ${activeTab === "affordability" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
+          >
+            Affordability Calculator
+          </button>
+        </div>
+
+        {/* Content based on active tab */}
+        {activeTab === "mortgage" && <MortgageCalculator />}
+        {activeTab === "affordability" && <AffordabilityCalculator />}
       </div>
 
-      {/* Content based on active tab */}
-      {activeTab === "mortgage" && <MortgageCalculator />}
-      {activeTab === "affordability" && <AffordabilityCalculator />}
-    </div>
+    </>
+
   );
 }
 
@@ -213,8 +224,10 @@ function MortgageCalculator() {
             required
             className="w-full border p-2 rounded mt-1"
             min="0"
+            step="0.001"  // Allow decimals
           />
         </div>
+
 
         {/* Loan Term */}
         <div>
