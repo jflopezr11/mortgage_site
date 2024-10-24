@@ -3,22 +3,58 @@
 import { useState } from 'react';
 
 export default function Contact() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '', number: '' });
+  const [formData, setFormData] = useState({ firstname: '', lastname: '', email: '', message: '', number: '' });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Basic validation for the phone number
-    const phoneNumberPattern = /^[0-9]{10}$/;  // Ensures 10 digits only
+    // Basic validation for phone number
+    const phoneNumberPattern = /^[0-9]{10}$/;
     if (!phoneNumberPattern.test(formData.number)) {
       alert('Please enter a valid 10-digit phone number');
-      return;  // Prevent form submission
+      return;
     }
 
+    // HubSpot form data payload
+    const hubspotPayload = {
+      fields: [
+        { name: "firstname", value: formData.firstname },
+        { name: "lastname", value: formData.lastname },
+        { name: "email", value: formData.email },
+        { name: "phone", value: formData.number },
+        { name: "message", value: formData.message }
+      ]
+    };
 
-    console.log('Form data:', formData);
+    try {
+      // Make the POST request to HubSpot API
+      const response = await fetch(
+        `https://api.hsforms.com/submissions/v3/integration/submit/47856163/332c7c6f-be7f-4286-8da3-6d30208eba2d`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `pat-na1-e3a7c3c0-b971-458f-8ab5-d44936d1485d` // Add your HubSpot Private App Token here
+          },
+          body: JSON.stringify(hubspotPayload),
+        }
+      );
+
+      if (response.ok) {
+        alert('Form submitted successfully');
+        setFormData({ firstname: '', lastname: '', email: '', message: '', number: '' }); // Reset form
+      } else {
+        const errorData = await response.json();
+        alert('Error submitting the form');
+        console.error('Error details:', errorData);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting the form.');
+    }
   };
 
+  // Handle form input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -27,12 +63,21 @@ export default function Contact() {
   return (
     <div className="flex flex-col items-center mt-10">
       <h1 className="text-2xl font-bold mb-4">Contact Me</h1>
-      <form className="flex flex-col w-full max-w-md" onSubmit={handleSubmit}> {/* Adjusted width */}
+      <form className="flex flex-col w-full max-w-md" onSubmit={handleSubmit}>
         <input
           type="text"
-          name="name"
-          placeholder="Your Name"
-          value={formData.name}
+          name="firstname"
+          placeholder="First Name"
+          value={formData.firstname}
+          onChange={handleChange}
+          required
+          className="border p-2 mb-4 rounded"
+        />
+        <input
+          type="text"
+          name="lastname"
+          placeholder="Last Name"
+          value={formData.lastname}
           onChange={handleChange}
           required
           className="border p-2 mb-4 rounded"
@@ -44,7 +89,7 @@ export default function Contact() {
           value={formData.number}
           onChange={handleChange}
           required
-          pattern="[0-9]{10}"  // Ensures a 10-digit number
+          pattern="[0-9]{10}"
           title="Please enter a valid 10-digit phone number"
           className="border p-2 mb-4 rounded"
         />
