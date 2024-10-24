@@ -29,12 +29,12 @@ export default function Contact() {
     try {
       // Make the POST request to HubSpot API
       const response = await fetch(
-        `https://api.hsforms.com/submissions/v3/integration/submit/x/x`,
+        `https://api.hsforms.com/submissions/v3/integration/submit/${process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID}/${process.env.NEXT_PUBLIC_HUBSPOT_FORM_ID}`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': '' // Add your HubSpot Private App Token here
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_HUBSPOT_API_TOKEN}` // Add your HubSpot Private App Token here
           },
           body: JSON.stringify(hubspotPayload),
         }
