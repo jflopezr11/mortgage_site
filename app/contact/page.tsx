@@ -34,7 +34,7 @@ export default function Contact() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `x` // Add your HubSpot Private App Token here
+            'Authorization': '' // Add your HubSpot Private App Token here
           },
           body: JSON.stringify(hubspotPayload),
         }
