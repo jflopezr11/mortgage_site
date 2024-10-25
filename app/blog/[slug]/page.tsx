@@ -14,11 +14,11 @@ export async function generateStaticParams() {
 }
 
 // Fetch the blog content based on the slug
-async function getPostData(slug) {
+async function getPostData(slug: string) {
     const markdownWithMeta = fs.readFileSync(path.join('content/posts', slug + '.md'), 'utf-8');
     const { data: frontmatter, content } = matter(markdownWithMeta);
 
-    // Convert markdown content to HTML
+    // Process the markdown content to HTML (if you're using a markdown-to-HTML converter)
     const processedContent = await remark().use(html).process(content);
     const contentHtml = processedContent.toString();
 
@@ -27,6 +27,7 @@ async function getPostData(slug) {
         contentHtml,
     };
 }
+
 
 // Blog post component
 export default async function BlogPost({ params }) {
