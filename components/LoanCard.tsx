@@ -1,7 +1,7 @@
 "use client";  // Client Component to enable interactivity
 import { useState, useEffect } from 'react';
 
-export default function LoanCard({ loanName, loanDescription }) {
+export default function LoanCard({ loanName, loanDescription }: { loanName: string; loanDescription: string }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   // Function to handle flipping the card

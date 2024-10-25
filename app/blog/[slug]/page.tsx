@@ -4,6 +4,7 @@ import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
 import Head from 'next/head';
+import { GetStaticPropsContext } from 'next';
 
 // Get all the slugs (blog post filenames) for static generation
 export async function generateStaticParams() {
@@ -30,7 +31,7 @@ async function getPostData(slug: string) {
 
 
 // Blog post component
-export default async function BlogPost({ params }) {
+export default async function BlogPost({ params }: { params: { slug: string } }) {
     const { slug } = params; // Get the slug from the URL
     const { frontmatter, contentHtml } = await getPostData(slug); // Fetch post data
 
@@ -49,6 +50,6 @@ export default async function BlogPost({ params }) {
                 </article>
             </div>
         </>
-
     );
 }
+

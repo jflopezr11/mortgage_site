@@ -3,7 +3,8 @@
 import LoanCard from '@/components/LoanCard';  // Adjusted path to point to the correct folder
 import { useState, useEffect } from 'react';
 import Link from 'next/link'; // Import the Next.js Link component
-import Head from 'next/head'
+import Head from 'next/head';
+
 
 
 export default function Home() {
@@ -13,9 +14,9 @@ export default function Home() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          heroSection.classList.add('animate'); // Add the 'animate' class when in view
+          heroSection?.classList.add('animate'); // Add the 'animate' class when in view
         } else {
-          heroSection.classList.remove('animate'); // Optionally remove if out of view
+          heroSection?.classList.remove('animate'); // Optionally remove if out of view
         }
       });
     });

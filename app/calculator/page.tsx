@@ -26,10 +26,30 @@ ChartJS.register(
   Legend
 );
 
+type AmortizationScheduleItem = {
+  month: number;
+  interestPayment: string;
+  principalPayment: string;
+  balance: string;
+};
+
+type ChartData = {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    borderColor: string;
+    backgroundColor: string;
+    fill: boolean;
+  }[];
+};
+
+
+
 export default function CalculatorTabs() {
   const [activeTab, setActiveTab] = useState("mortgage");
 
-  const handleTabClick = (tab) => {
+  const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
 
@@ -76,13 +96,15 @@ function MortgageCalculator() {
   const [downPayment, setDownPayment] = useState("");
   const [interestRate, setInterestRate] = useState("");
   const [loanTerm, setLoanTerm] = useState("");
-  const [monthlyPayment, setMonthlyPayment] = useState(null);
-  const [amortizationSchedule, setAmortizationSchedule] = useState([]);
-  const [chartData, setChartData] = useState(null);
+  const [monthlyPayment, setMonthlyPayment] = useState<number | null>(null);
+  const [amortizationSchedule, setAmortizationSchedule] = useState<AmortizationScheduleItem[]>([]);
+  const [chartData, setChartData] = useState<ChartData | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
+  
+
 
   // Handle form submission and validation
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (parseFloat(purchasePrice) <= 0) {
       setErrorMessage("Please enter a valid purchase price greater than zero.");
@@ -110,7 +132,8 @@ function MortgageCalculator() {
     const term = parseInt(loanTerm) * 12;
 
     const M = (loanAmount * rate * Math.pow(1 + rate, term)) / (Math.pow(1 + rate, term) - 1);
-    setMonthlyPayment(M.toFixed(2));
+    setMonthlyPayment(parseFloat(M.toFixed(2)));
+
 
     // Generate amortization schedule
     const schedule = generateAmortizationSchedule(loanAmount, M, rate, term);
@@ -122,9 +145,15 @@ function MortgageCalculator() {
   };
 
   // Generate amortization schedule
-  const generateAmortizationSchedule = (loanAmount, monthlyPayment, monthlyRate, totalPayments) => {
+  const generateAmortizationSchedule = (
+    loanAmount: number,
+    monthlyPayment: number,
+    monthlyRate: number,
+    totalPayments: number
+  ): AmortizationScheduleItem[] => {
     let balance = loanAmount;
-    const schedule = [];
+    const schedule: AmortizationScheduleItem[] = [];
+  
 
     for (let i = 1; i <= totalPayments; i++) {
       const interestPayment = balance * monthlyRate;
@@ -143,11 +172,11 @@ function MortgageCalculator() {
   };
 
   // Generate chart data for visualization
-  const generateChartData = (schedule) => {
+  const generateChartData = (schedule: AmortizationScheduleItem[]): ChartData => {
     const labels = schedule.map((item) => `Month ${item.month}`);
     const principalData = schedule.map((item) => parseFloat(item.principalPayment));
     const interestData = schedule.map((item) => parseFloat(item.interestPayment));
-
+  
     return {
       labels,
       datasets: [
@@ -168,6 +197,7 @@ function MortgageCalculator() {
       ],
     };
   };
+  
 
   return (
     <div className="w-full max-w-2xl bg-white shadow-lg rounded-lg p-6">
@@ -306,10 +336,10 @@ function MortgageCalculator() {
 function AffordabilityCalculator() {
   const [income, setIncome] = useState("");
   const [monthlyDebt, setMonthlyDebt] = useState("");
-  const [affordableLoan, setAffordableLoan] = useState(null);
+  const [affordableLoan, setAffordableLoan] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const calculateAffordability = (e) => {
+  const calculateAffordability = (e: React.FormEvent<HTMLFormElement>) =>  {
     e.preventDefault();
 
     if (parseFloat(income) <= 0 || parseFloat(monthlyDebt) < 0) {
@@ -323,7 +353,7 @@ function AffordabilityCalculator() {
     const monthlyDebtObligations = parseFloat(monthlyDebt);
 
     const maxMonthlyPayment = (annualIncome / 12) * 0.36 - monthlyDebtObligations;
-    setAffordableLoan(maxMonthlyPayment.toFixed(2));
+    setAffordableLoan(parseFloat(maxMonthlyPayment.toFixed(2)));
   };
 
   return (

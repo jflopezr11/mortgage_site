@@ -1,21 +1,19 @@
 "use client";
-
 import { useState } from 'react';
 
 export default function Contact() {
   const [formData, setFormData] = useState({ firstname: '', lastname: '', email: '', message: '', number: '' });
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Basic validation for phone number
+    // Continue with the form handling logic
     const phoneNumberPattern = /^[0-9]{10}$/;
     if (!phoneNumberPattern.test(formData.number)) {
       alert('Please enter a valid 10-digit phone number');
       return;
     }
 
-    // HubSpot form data payload
     const hubspotPayload = {
       fields: [
         { name: "firstname", value: formData.firstname },
@@ -26,36 +24,25 @@ export default function Contact() {
       ]
     };
 
-    try {
-      // Make the POST request to HubSpot API
-      const response = await fetch(
-        `https://api.hsforms.com/submissions/v3/integration/submit/${process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID}/${process.env.NEXT_PUBLIC_HUBSPOT_FORM_ID}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_HUBSPOT_API_TOKEN}` // Add your HubSpot Private App Token here
-          },
-          body: JSON.stringify(hubspotPayload),
-        }
-      );
-
-      if (response.ok) {
-        alert('Form submitted successfully');
-        setFormData({ firstname: '', lastname: '', email: '', message: '', number: '' }); // Reset form
-      } else {
-        const errorData = await response.json();
-        alert('Error submitting the form');
-        console.error('Error details:', errorData);
+    const response = await fetch(
+      `https://api.hsforms.com/submissions/v3/integration/submit/47856163/332c7c6f-be7f-4286-8da3-6d30208eba2d`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(hubspotPayload),
       }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('There was an error submitting the form.');
+    );
+
+    if (response.ok) {
+      alert('Form submitted successfully');
+    } else {
+      alert('There was an error submitting the form');
     }
   };
 
-  // Handle form input changes
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -120,3 +107,4 @@ export default function Contact() {
     </div>
   );
 }
+
