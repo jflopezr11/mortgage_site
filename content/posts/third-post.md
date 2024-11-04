@@ -1,3 +1,11 @@
+---
+title: "First-Time Homebuyer Tips from Your Loan Officer"
+date: "2024-11-04"
+description: "Explore essential tips for first-time homebuyers, from saving for a down payment to understanding loan options. Get guidance from Josh Lopez, your friendly Mortgage Loan Officer in California."
+keywords: ["First-Time Homebuyer", "Mortgage Tips", "Down Payment", "Credit Score Tips", "Mortgage Loans", "California Mortgage"]
+---
+
+
 # Tips for First-Time Homebuyers: Your Friendly Guide to Getting a Place of Your Own 🏠
 
 Buying your first home is a thrilling experience—but it can feel like navigating a maze of finances, paperwork, and real estate jargon. As a loan officer, I’m here to break it down into a stress-free journey. With a little planning, some insider tips, and a dash of humor, let’s make home-buying both smart and enjoyable!
