@@ -32,8 +32,11 @@ async function getPostData(slug: string) {
 
 // Blog post component
 export default async function BlogPost({ params }: { params: { slug: string } }) {
-    const { slug } = params; // Get the slug from the URL
-    const { frontmatter, contentHtml } = await getPostData(slug); // Fetch post data
+    const { slug } = params;
+    const { frontmatter, contentHtml } = await getPostData(slug);
+
+    console.log("Frontmatter:", frontmatter);
+    console.log("Content HTML:", contentHtml);
 
     return (
         <>
@@ -52,4 +55,5 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         </>
     );
 }
+
 
