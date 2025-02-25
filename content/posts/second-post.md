@@ -5,6 +5,11 @@ description: "Meet Josh Lopez, your dedicated Mortgage Loan Officer in Californi
 keywords: ["Mortgage Loan Officer", "FHA Loans", "Conventional Loans", "Down Payment Assistance", "Josh Lopez", "California"]
 ---
 
+<img width="100%" controls>
+  <source src="/public/videos/JoshuaLopez.mp4" type="video/mp4">
+</img>
+
+
 # Hey, I'm Josh Lopez, Your Mortgage Guy with a Competitive Edge!
 
 What’s up? I’m Josh Lopez, a Mortgage Loan Officer here in sunny California since 2021. Think of me as your guide through the wild world of home loans—whether you’re looking at an FHA loan to get your foot in the door or a Conventional loan to lock in that dream home. I’m always just a phone call away to help make it happen!

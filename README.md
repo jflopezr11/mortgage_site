@@ -1,5 +1,5 @@
 ## 🏡 JoshuaLopezLoans.com — The Ultimate Mortgage Hub 🏡
-Welcome to the world of JoshuaLopezLoans.com, where mortgages aren't just serious business, they’re also kinda fun (well, we try). This is your go-to site for everything mortgage-related, packed with tools, resources, and a sprinkle of cheeky humor. I built this from the ground up, and yes, the Mortgage Calculator is my favorite child. Let’s dive in:
+Welcome to the world of JoshuaLopezLoans.com, where mortgages aren't just serious business, they’re also kinda fun (well, I try). This is your go-to site for everything mortgage-related, packed with tools, resources, and a sprinkle of cheeky humor. I built this from the ground up, and yes, the Mortgage Calculator is my favorite child. Let’s dive in:
 
 
 ## 🚀 Summary:

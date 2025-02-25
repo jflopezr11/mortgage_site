@@ -62,6 +62,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <li>
                 <Link href="/blog" className="hover:text-blue-300">Visit My Blog</Link>
               </li>
+              <li>
+                  <Link href="/loan" className="hover:text-blue-300 block">Ready to Apply?</Link>
+                </li>
             </ul>
 
             {/* Mobile Menu (Visible only when the hamburger is clicked) */}
@@ -78,6 +81,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </li>
                 <li>
                   <Link href="/blog" className="hover:text-blue-300 block">Visit My Blog</Link>
+                </li>
+                <li>
+                  <Link href="/loan" className="hover:text-blue-300 block">Ready to Apply?</Link>
                 </li>
               </ul>
             </div>
