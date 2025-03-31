@@ -5,13 +5,14 @@ import { PortableText } from '@portabletext/react'
 
 export const revalidate = 60
 
-interface PageProps {
+type PageProps = {
   params: { slug: string }
 }
 
-interface StaticParam {
+type StaticParam = {
   slug: string
 }
+
 
 
 
@@ -28,7 +29,7 @@ const getPostQuery = groq`
   }
 `
 
-export async function generateStaticParams(): Promise<PageProps['params'][]> {
+export async function generateStaticParams(): Promise<StaticParam[]> {
   const query = groq`*[_type == "post"]{ "slug": slug.current }`
   const slugs = await sanityClient.fetch(query)
 
