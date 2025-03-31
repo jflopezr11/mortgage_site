@@ -69,7 +69,7 @@ export default function Home() {
         </script>
       </Head>
       <div>
-        <main className="hero-section flex flex-col items-center justify-center h-screen text-center bg-blue-100  pb-8 gap-10"> {/* Decreased bottom margin */}
+      <main className="hero-section flex flex-col items-center justify-center h-screen text-center bg-blue-100 pt-24 pb-8 gap-10"> {/* Decreased bottom margin */}
           <div className="relative mb-8 md:mb-0 md:mr-12 animate-fade-in">
             <div className="absolute inset-0 rounded-2xl bg-blue-300 blur-xl opacity-30 -z-10"></div>
             <div className="w-60 h-auto rounded-2xl overflow-hidden shadow-xl border border-gray-200 hover:scale-105 transition-transform duration-300">
