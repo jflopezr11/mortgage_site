@@ -94,7 +94,6 @@ export default function Home() {
           </div>
 
 
-
           <div className="max-w-xl animate-fade-in delay-150">
             <h1 className="text-5xl font-bold mb-4 text-blue-900">Welcome! I’m Joshua Lopez, NMLS #2230624</h1>
             <p className="text-lg text-blue-700 mb-6">Helping you navigate the mortgage process with confidence and clarity.</p>

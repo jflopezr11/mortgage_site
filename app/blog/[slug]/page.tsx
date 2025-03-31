@@ -9,6 +9,11 @@ interface PageProps {
   params: { slug: string }
 }
 
+interface StaticParam {
+  slug: string
+}
+
+
 
 const getPostQuery = groq`
   *[_type == "post" && slug.current == $slug][0]{
