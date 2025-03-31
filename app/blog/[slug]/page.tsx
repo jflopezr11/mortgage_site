@@ -3,18 +3,16 @@ import { groq } from 'next-sanity'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 
+
 export const revalidate = 60
 
 type PageProps = {
-  params: { slug: string }
+  params: Promise<{ slug: string }> // Updated to match Next.js App Router expectation
 }
 
 type StaticParam = {
   slug: string
 }
-
-
-
 
 const getPostQuery = groq`
   *[_type == "post" && slug.current == $slug][0]{
@@ -38,9 +36,10 @@ export async function generateStaticParams(): Promise<StaticParam[]> {
   }))
 }
 
-
 export default async function BlogPostPage({ params }: PageProps) {
-  const post = await sanityClient.fetch(getPostQuery, { slug: params.slug })
+  
+  const { slug } = await params
+  const post = await sanityClient.fetch(getPostQuery, { slug })
 
   if (!post) {
     return <div className="p-6 text-red-600 text-xl">Post not found.</div>
@@ -62,7 +61,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           className="rounded-lg mb-6"
         />
       ) : (
-        <div className="mb-6 bg-gray-100 w-full h-[300px] flex items-center justify-cente text-gray-400 text-sm italic">
+        <div className="mb-6 bg-gray-100 w-full h-[300px] flex items-center justify-center text-gray-400 text-sm italic">
           No image provided for this post.
         </div>
       )}
@@ -73,5 +72,4 @@ export default async function BlogPostPage({ params }: PageProps) {
     </div>
   )
 }
-
 
