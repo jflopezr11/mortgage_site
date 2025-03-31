@@ -4,6 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .animate-fade-in {
+    @apply opacity-0 translate-y-5 transition-opacity duration-700 ease-out;
+  }
+  .hero-section.animate .animate-fade-in {
+    @apply opacity-100 translate-y-0;
+  }
+
+  .delay-150 {
+    transition-delay: 150ms;
+  }
+}
+
 
 body {
   font-family: 'Poppins', sans-serif;

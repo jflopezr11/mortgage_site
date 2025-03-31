@@ -1,59 +1,65 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-import { remark } from 'remark';
-import html from 'remark-html';
-import Head from 'next/head';
-import { GetStaticPropsContext } from 'next';
+import { sanityClient } from '@/lib/sanityClient'
+import { groq } from 'next-sanity'
+import Image from 'next/image'
+import { PortableText } from '@portabletext/react'
 
-// Get all the slugs (blog post filenames) for static generation
+export const revalidate = 60
+
+const getPostQuery = groq`
+  *[_type == "post" && slug.current == $slug][0]{
+    title,
+    publishedAt,
+    coverImage{
+      asset->{
+        url
+      }
+    },
+    body
+  }
+`
+
 export async function generateStaticParams() {
-    const files = fs.readdirSync('content/posts');
-    return files.map((filename) => ({
-        slug: filename.replace('.md', ''),
-    }));
+  const query = groq`*[_type == "post"]{ "slug": slug.current }`
+  const slugs = await sanityClient.fetch(query)
+
+  return slugs.map((slug: { slug: string }) => ({
+    slug: slug.slug,
+  }))
 }
 
-// Fetch the blog content based on the slug
-async function getPostData(slug: string) {
-    const markdownWithMeta = fs.readFileSync(path.join('content/posts', slug + '.md'), 'utf-8');
-    const { data: frontmatter, content } = matter(markdownWithMeta);
-
-    // Process the markdown content to HTML (if you're using a markdown-to-HTML converter)
-    const processedContent = await remark().use(html).process(content);
-    const contentHtml = processedContent.toString();
-
-    return {
-        frontmatter,
-        contentHtml,
-    };
-}
-
-
-// Blog post component
-export default async function BlogPost({ params }: { params: { slug: string } }) {
-    const { slug } = params;
-    const { frontmatter, contentHtml } = await getPostData(slug);
-
-    console.log("Frontmatter:", frontmatter);
-    console.log("Content HTML:", contentHtml);
-
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+    const post = await sanityClient.fetch(getPostQuery, { slug: params.slug })
+  
+    if (!post) {
+      return <div className="p-6 text-red-600 text-xl">Post not found.</div>
+    }
+  
     return (
-        <>
-            <Head>
-                <title>{frontmatter.title} | Joshua Lopez Blog</title>
-                <meta name="description" content={frontmatter.description} />
-                <meta name="keywords" content={frontmatter.keywords || "mortgage, loans, QM loan"} />
-            </Head>
-            <div className="container mx-auto p-6">
-                <h1 className="text-4xl font-bold mb-4">{frontmatter.title}</h1>
-                <p className="text-sm text-gray-500 mb-4">{frontmatter.date}</p>
-                <article className="prose prose-lg max-w-none">
-                    <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-                </article>
+      <div className="max-w-3xl mx-auto p-6">
+        <h1 className="text-4xl font-bold mb-2">{post.title}</h1>
+        <p className="text-gray-500 text-sm mb-4">
+          {new Date(post.publishedAt).toLocaleDateString()}
+        </p>
+  
+        {post.coverImage?.asset?.url ? (
+          <Image
+            src={post.coverImage.asset.url}
+            alt={post.title}
+            width={800}
+            height={400}
+            className="rounded-lg mb-6"
+          />
+        ) : (
+            <div className= "mb-6 bg-gray-100 w-full h-[300px] flex items-center justify-cente text-gray-400 text-sm italic"> 
+             No image provided for this post.
             </div>
-        </>
-    );
-}
+        )}
+  
+        <div className="prose prose-lg max-w-none">
+          <PortableText value={post.body} />
+        </div>
+      </div>
+    )
+  }
 
 
