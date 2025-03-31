@@ -70,6 +70,8 @@ export default function Home() {
       </Head>
       <div>
       <main className="hero-section flex flex-col items-center justify-center h-screen text-center bg-blue-100 pt-24 pb-8 gap-10"> {/* Decreased bottom margin */}
+      <div className="flex flex-col items-center justify-center min-h-screen pt-28 pb-10 gap-10"> 
+    
           <div className="relative mb-8 md:mb-0 md:mr-12 animate-fade-in">
             <div className="absolute inset-0 rounded-2xl bg-blue-300 blur-xl opacity-30 -z-10"></div>
             <div className="w-60 h-auto rounded-2xl overflow-hidden shadow-xl border border-gray-200 hover:scale-105 transition-transform duration-300">
@@ -80,7 +82,8 @@ export default function Home() {
               />
             </div>
           </div>
-
+        </div>  
+         {/* Badges */}
           <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-4">
             <span className="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full hover:bg-opacity-80">
               ✅ FHA Specialist
