@@ -7,7 +7,10 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/typography'),
+    require("tailwindcss-animate"),
+    require('@tailwindcss/aspect-ratio'), 
+  ],
 };
 
 
