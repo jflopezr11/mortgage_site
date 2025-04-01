@@ -24,10 +24,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="bg-blue-100 text-center w-full transition-opacity"
-    >
+    
       <div className="flex flex-col items-center justify-start min-h-screen pb-10 gap-10">
         {/* Headshot */}
         <div className="w-60 rounded-2xl overflow-hidden shadow-xl border border-gray-200 hover:scale-105 transition-transform duration-300">
@@ -68,6 +65,6 @@ export default function Hero() {
           </Link>
         </div>
       </div>
-    </section>
+ 
   );
 }

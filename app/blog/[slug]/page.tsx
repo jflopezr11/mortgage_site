@@ -1,4 +1,4 @@
-import { sanityClient } from '@/lib/sanityClient'
+import { client } from '@/lib/sanityClient'
 import { groq } from 'next-sanity'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
@@ -29,7 +29,7 @@ const getPostQuery = groq`
 
 export async function generateStaticParams(): Promise<StaticParam[]> {
   const query = groq`*[_type == "post"]{ "slug": slug.current }`
-  const slugs = await sanityClient.fetch(query)
+  const slugs = await client.fetch(query)
 
   return slugs.map((slug: { slug: string }) => ({
     slug: slug.slug,
@@ -39,7 +39,7 @@ export async function generateStaticParams(): Promise<StaticParam[]> {
 export default async function BlogPostPage({ params }: PageProps) {
   
   const { slug } = await params
-  const post = await sanityClient.fetch(getPostQuery, { slug })
+  const post = await client.fetch(getPostQuery, { slug })
 
   if (!post) {
     return <div className="p-6 text-red-600 text-xl">Post not found.</div>

@@ -13,7 +13,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <section className="hero-section">
+        <section className="box-border p-6 md:p-10 max-w-5xl mx-auto border border-gray-300 rounded-2xl shadow-md bg-white">
           <Hero />
         </section>
 

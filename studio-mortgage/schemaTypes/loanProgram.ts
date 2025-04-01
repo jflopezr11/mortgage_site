@@ -41,6 +41,8 @@ export default defineType({
           {title: 'ITIN', value: 'itin'}, 
           {title: 'Home Equity Line of Credit', value: 'HELOC'}, 
           {title: 'Mobile Home', value: 'mobileHome'},
+          {title: 'Non-QM', value: 'nonQM'},
+          {title: 'Jumbo', value: 'jumbo'},
         ],
         layout: 'dropdown',
       },

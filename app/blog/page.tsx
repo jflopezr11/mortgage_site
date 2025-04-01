@@ -1,4 +1,4 @@
-import { sanityClient } from '@/lib/sanityClient'
+import { client } from '@/lib/sanityClient'
 import { getAllPostsQuery } from '@/lib/queries'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,7 +15,7 @@ const query = groq`*[_type == "post"]{
 
 
 export default async function Blog() {
-  const posts = await sanityClient.fetch(getAllPostsQuery)
+  const posts = await client.fetch(getAllPostsQuery)
 
   return (
     <div className="container mx-auto p-6">
