@@ -1,5 +1,5 @@
 import { groq } from 'next-sanity'
-import { sanityClient } from './sanityClient'
+import { client } from './sanityClient'
 
 export const getAllPostsQuery = groq`*[_type == "post"]{
   _id,
@@ -27,6 +27,5 @@ export const getLoanProgramsQuery = groq`
     "imageUrl": image.asset->url
   }
 `
-console.log('Sanity client:', sanityClient)
 
 
