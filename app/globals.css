@@ -27,11 +27,6 @@ body {
   letter-spacing: 0.5px;
 }
 
-main {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
 
 button {
   background-color: #007bff;
@@ -90,15 +85,6 @@ p, a, li {
   }
 }
 
-.hero-section {
-  opacity: 0; /* Start invisible */
-  transition: opacity 0.5s ease-out;
-}
-
-.hero-section.animate {
-  opacity: 1;
-  animation: fadeInUp 1s ease-out;
-}
 
 
 @keyframes fadeInScale {
