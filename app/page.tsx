@@ -4,6 +4,26 @@ import Head from 'next/head'
 import LoanProgramsSection from '@/components/LoanProgramsSection'
 import ContactForm from '@/components/ContactForm'
 
+export const metadata = {
+  title: "Home | Josh Lopez Loans",
+  description: "Helping you find the perfect loan for your dream home. Personalized loan programs and expert guidance.",
+  openGraph: {
+    title: "Josh Lopez Loans",
+    description: "Helping you find the perfect loan for your dream home.",
+    url: "https://joshualopezloans.com",
+    siteName: "Josh Lopez Loans",
+    images: [
+      {
+        url: "https://joshualopezloans.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    type: "website",
+  },
+};
+
+
 export default function Home() {
   return (
     <>
