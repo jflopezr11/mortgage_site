@@ -31,6 +31,17 @@ export default function BookACallPage() {
   return (
     <div className="min-h-screen bg-white py-20 px-6 flex flex-col items-center text-center">
       <div className="max-w-2xl">
+
+        <div className="mb-6">
+          <Image
+            src="/pictures/GOTLogo.png" 
+            alt="GOT Mortgage Solutions logo"
+            width={160}
+            height={50}
+            className="mx-auto"
+          />
+        </div>
+
         <h1 className="text-4xl md:text-5xl font-bold text-blue-900 mb-6">
           Book a Free Call with Joshua
         </h1>
