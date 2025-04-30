@@ -15,8 +15,12 @@ const query = groq`*[_type == "post"]{
   excerpt
 } | order(publishedAt desc)`
 
+export const revalidate = 60 // seconds
+
 export default async function Blog() {
   const posts = await client.fetch(getAllPostsQuery)
+  console.log('Fetched posts:', posts)
+
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">

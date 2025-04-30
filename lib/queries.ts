@@ -1,7 +1,7 @@
 import { groq } from 'next-sanity'
 
 
-export const getAllPostsQuery = groq`*[_type == "post"]{
+export const getAllPostsQuery = groq`*[_type == "post" && defined(slug.current) && publishedAt < now()]{
   _id,
   title,
   slug,
@@ -14,6 +14,8 @@ export const getAllPostsQuery = groq`*[_type == "post"]{
     }
   }
 } | order(publishedAt desc)`
+
+
 
 export const getLoanProgramsQuery = groq`
   *[_type == "loanProgram"] | order(createdAt desc) {
