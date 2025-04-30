@@ -28,4 +28,10 @@ export const getLoanProgramsQuery = groq`
   }
 `
 
+export const howItWorksQuery = groq`
+  *[_type == "howItWorksSection" && slug.current == $slug][0]{
+    title,
+    body
+  }
+`;
 
