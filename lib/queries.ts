@@ -1,5 +1,5 @@
 import { groq } from 'next-sanity'
-import { client } from './sanityClient'
+
 
 export const getAllPostsQuery = groq`*[_type == "post"]{
   _id,
