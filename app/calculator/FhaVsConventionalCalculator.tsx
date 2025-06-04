@@ -127,14 +127,14 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
         const financedFHALoan = loanAmountFHA + upfrontMIP
         const annualMIPRate = getAnnualMIPRate(form.loanTerm, ltvFHA)
         monthlyFhaMIP = calcMonthlyMIP(loanAmountFHA, annualMIPRate)
-        const monthlyPI_FHA = calcMonthlyPI(loanAmountFHA, form.fhaRate, form.loanTerm)
+        const monthlyPI_FHA = calcMonthlyPI(loanAmountFHA, form.fhaRate ?? 0, form.loanTerm)
 
         // CONVENTIONAL LOAN
         loanAmountConv = calcLoanAmount(purchasePrice, downPayment)
         const ltvConv = loanAmountConv / purchasePrice || 1; // Avoid division by 0
         const convPMIRate = getPMIRateByFico(form.fico)
         monthlyConvPMI = (loanAmountConv * convPMIRate) / 12
-        const monthlyPI_Conv = calcMonthlyPI(loanAmountConv, form.convRate, form.loanTerm)
+        const monthlyPI_Conv = calcMonthlyPI(loanAmountConv, form.convRate ?? 0, form.loanTerm)
         console.log("Using PMI rate:", convPMIRate)
 
         // SHARED COSTS
@@ -267,7 +267,7 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
                         step="0.01"
                         name="convRate"
                         placeholder='e.g. 7.5'
-                        value={form.convRate || ''}
+                        value={form.fhaRate || ''} // This should be form.convRate
                         onChange={handleChange}
                         className="border border-gray-300 p-2 rounded"
                     />
