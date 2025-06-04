@@ -7,9 +7,13 @@ import Head from 'next/head';
 import CalculatorTabs from './CalculatorTabs';
 
 export default async function CalculatorPage() {
-  const howItWorksContent = await client.fetch(howItWorksQuery, {
+  const rentVsOwnContent = await client.fetch(howItWorksQuery, {
     slug: "rent-vs-own-info",
-  });  
+  });
+
+  const fhaVsConventionalContent = await client.fetch(howItWorksQuery, {
+    slug: "fha-vs-conventional-info",
+  });
 
   return (
     <>
@@ -26,10 +30,14 @@ export default async function CalculatorPage() {
       </Head>
 
       <div className="flex flex-col items-center mt-10">
-       
-
-        <CalculatorTabs howItWorksContent={howItWorksContent} />
+        <CalculatorTabs
+          howItWorksContent={{
+            rent: rentVsOwnContent,
+            comparison: fhaVsConventionalContent,
+          }}
+        />
       </div>
     </>
   );
 }
+
