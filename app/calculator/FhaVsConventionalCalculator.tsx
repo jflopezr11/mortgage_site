@@ -132,14 +132,14 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
         // CONVENTIONAL LOAN
         loanAmountConv = calcLoanAmount(purchasePrice, downPayment)
         const ltvConv = loanAmountConv / purchasePrice || 1; // Avoid division by 0
-        const convPMIRate = getPMIRateByFico(form.fico)
+        const convPMIRate = getPMIRateByFico(form.fico ?? '720+')
         monthlyConvPMI = (loanAmountConv * convPMIRate) / 12
         const monthlyPI_Conv = calcMonthlyPI(loanAmountConv, form.convRate ?? 0, form.loanTerm)
         console.log("Using PMI rate:", convPMIRate)
 
         // SHARED COSTS
         const monthlyTax = (purchasePrice * form.propertyTax / 100) / 12
-        const monthlyInsurance = form.insurance / 12
+        const monthlyInsurance = (form.insurance ?? 0) / 12
         const monthlyHOA = form.hoa || 0
 
         // FINAL PAYMENTS
