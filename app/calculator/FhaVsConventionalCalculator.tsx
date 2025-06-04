@@ -3,6 +3,19 @@
 import React, { useState } from 'react'
 import HowItWorks from './HowItWorks'
 
+type FormData = {
+    purchasePrice: number | null;
+    downPaymentPercent: number | null;
+    downPaymentAmount: number | null;
+    fhaRate: number | null;
+    convRate: number | null;
+    loanTerm: number;
+    propertyTax: number;
+    insurance: number | null;
+    hoa: number | null;
+    fico: string | null;
+}
+
 type Props = {
     howItWorksContent: any
 }
@@ -10,7 +23,7 @@ type Props = {
 export default function FHAVsCon({ howItWorksContent }: Props) {
     const [inputMode, setInputMode] = useState<'percent' | 'amount'>('percent')
 
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<FormData>({
         purchasePrice: null,
         downPaymentPercent: null,
         downPaymentAmount: null,
@@ -139,7 +152,7 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
 
         // SHARED COSTS
         const monthlyTax = (purchasePrice * form.propertyTax / 100) / 12
-        const monthlyInsurance = (form.insurance ?? 0) / 12
+        const monthlyInsurance = (form.insurance ?? 0)  / 12
         const monthlyHOA = form.hoa || 0
 
         // FINAL PAYMENTS
@@ -206,10 +219,10 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
                                 onChange={(e) => {
                                     const percent = parseFloat(e.target.value)
                                     const amount = (form.purchasePrice || 0) * (percent / 100)
-                                setForm((prev) => ({
-                                    ...prev,
-                                    downPaymentPercent: percent,
-                                    downPaymentAmount: Math.round(amount),
+                                    setForm((prev) => ({
+                                        ...prev,
+                                        downPaymentPercent: percent,
+                                        downPaymentAmount: Math.round(amount),
                                     }))
                                 }}
                                 className="border border-gray-300 p-2 rounded w-full"
@@ -238,7 +251,6 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
                                         downPaymentPercent: Math.round(percent * 100) / 100,
                                     }));
                                 }}
-
                                 className="border border-gray-300 p-2 rounded w-full"
                             />
                         </div>
@@ -267,7 +279,7 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
                         step="0.01"
                         name="convRate"
                         placeholder='e.g. 7.5'
-                        value={form.fhaRate || ''} // This should be form.convRate
+                        value={form.convRate || ''}
                         onChange={handleChange}
                         className="border border-gray-300 p-2 rounded"
                     />
