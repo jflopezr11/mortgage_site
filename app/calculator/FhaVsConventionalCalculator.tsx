@@ -140,7 +140,7 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
         const financedFHALoan = loanAmountFHA + upfrontMIP
         const annualMIPRate = getAnnualMIPRate(form.loanTerm, ltvFHA)
         monthlyFhaMIP = calcMonthlyMIP(loanAmountFHA, annualMIPRate)
-        const monthlyPI_FHA = calcMonthlyPI(loanAmountFHA, form.fhaRate ?? 0, form.loanTerm)
+        const monthlyPI_FHA = calcMonthlyPI(financedFHALoan, form.fhaRate ?? 0, form.loanTerm)
 
         // CONVENTIONAL LOAN
         loanAmountConv = calcLoanAmount(purchasePrice, downPayment)
