@@ -25,7 +25,6 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
 
     const [useRealMinimums, setUseRealMinimums] = useState(false);
 
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
@@ -35,16 +34,13 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
         }));
     };
 
-
     const toggleInputMode = () => {
         setInputMode((prev) => (prev === 'percent' ? 'amount' : 'percent'))
     }
 
-
     function calcLoanAmount(purchasePrice: number, downPayment: number): number {
         return purchasePrice - downPayment
     }
-
 
     function getAnnualMIPRate(loanTerm: number, ltv: number): number {
         if (loanTerm === 30) return 0.0055
@@ -52,11 +48,9 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
         return 0
     }
 
-
     function calcMonthlyMIP(baseLoanAmount: number, annualMIPRate: number): number {
         return (baseLoanAmount * annualMIPRate) / 12
     }
-
 
     function estimatePMIRate(ltv: number): number {
         if (ltv >= 0.97) return 0.0125
@@ -66,7 +60,6 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
         if (ltv > 0.80) return 0.005
         return 0
     }
-
 
     function calcMonthlyPI(principal: number, annualRate: number, loanTermYears: number): number {
         const monthlyRate = annualRate / 100 / 12
@@ -88,7 +81,6 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
     } else {
         downPayment = form.downPaymentAmount || 0;
     }
-
 
     function getPMIRateByFico(fico: string): number {
         switch (fico) {
@@ -118,19 +110,19 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
 
     console.log("FICO selected:", form.fico)
 
-
-
     if (inputsAreValid) {
         // Separate FHA vs Conventional down payment logic
         const fhaDownPaymentPercent = useRealMinimums ? 3.5 : form.downPaymentPercent;
         const convDownPaymentPercent = useRealMinimums ? 5 : form.downPaymentPercent;
 
-        const fhaDownPayment = (form.purchasePrice * fhaDownPaymentPercent) / 100;
-        const convDownPayment = (form.purchasePrice * convDownPaymentPercent) / 100;
+        // Use nullish coalescing to handle null purchasePrice
+        const purchasePrice = form.purchasePrice ?? 0;
+        const fhaDownPayment = (purchasePrice * (fhaDownPaymentPercent ?? 0)) / 100;
+        const convDownPayment = (purchasePrice * (convDownPaymentPercent ?? 0)) / 100;
 
         // FHA LOAN
-        loanAmountFHA = calcLoanAmount(form.purchasePrice, downPayment)
-        const ltvFHA = loanAmountFHA / form.purchasePrice
+        loanAmountFHA = calcLoanAmount(purchasePrice, downPayment)
+        const ltvFHA = loanAmountFHA / purchasePrice || 1; // Avoid division by 0
         const upfrontMIP = loanAmountFHA * 0.0175
         const financedFHALoan = loanAmountFHA + upfrontMIP
         const annualMIPRate = getAnnualMIPRate(form.loanTerm, ltvFHA)
@@ -138,15 +130,15 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
         const monthlyPI_FHA = calcMonthlyPI(loanAmountFHA, form.fhaRate, form.loanTerm)
 
         // CONVENTIONAL LOAN
-        loanAmountConv = calcLoanAmount(form.purchasePrice, downPayment)
-        const ltvConv = loanAmountConv / form.purchasePrice
+        loanAmountConv = calcLoanAmount(purchasePrice, downPayment)
+        const ltvConv = loanAmountConv / purchasePrice || 1; // Avoid division by 0
         const convPMIRate = getPMIRateByFico(form.fico)
         monthlyConvPMI = (loanAmountConv * convPMIRate) / 12
         const monthlyPI_Conv = calcMonthlyPI(loanAmountConv, form.convRate, form.loanTerm)
         console.log("Using PMI rate:", convPMIRate)
 
         // SHARED COSTS
-        const monthlyTax = (form.purchasePrice * form.propertyTax / 100) / 12
+        const monthlyTax = (purchasePrice * form.propertyTax / 100) / 12
         const monthlyInsurance = form.insurance / 12
         const monthlyHOA = form.hoa || 0
 
@@ -164,10 +156,6 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
         totalCost5FHA = monthlyPaymentFHA * 12 * 5 + upfrontCostFHA
         totalCost5Conv = monthlyPaymentConv * 12 * 5 + upfrontCostConv
     }
-
-
-
-
 
     return (
         <div className="flex flex-col items-center mt-10 px-4">
@@ -257,7 +245,6 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
                     </div>
                 </div>
 
-
                 {/* FHA Interest Rate */}
                 <div className="flex flex-col">
                     <label className="font-medium mb-1">FHA Interest Rate (%)</label>
@@ -301,7 +288,6 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
                         <option value="<660">Below 660</option>
                     </select>
                 </div>
-
 
                 {/* Loan Term */}
                 <div className="flex flex-col">
@@ -367,7 +353,6 @@ export default function FHAVsCon({ howItWorksContent }: Props) {
                     />
                 </div>
             )}
-
 
             {inputsAreValid && (
                 <div className="mt-12 w-full max-w-4xl">
