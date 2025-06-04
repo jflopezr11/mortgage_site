@@ -1,4 +1,5 @@
-import { groq } from 'next-sanity'
+import { groq } from 'next-sanity';
+import { client } from './sanityClient';
 
 
 export const getAllPostsQuery = groq`*[_type == "post" && defined(slug.current) && publishedAt < now()]{
