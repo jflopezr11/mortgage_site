@@ -30,33 +30,29 @@ export default function CalculatorTabs({
       <div className="flex flex-wrap justify-center gap-2 mb-8 px-2 max-w-full overflow-x-auto">
         <button
           onClick={() => handleTabClick('mortgage')}
-          className={`p-3 ${
-            activeTab === 'mortgage' ? 'bg-blue-500 text-white' : 'bg-gray-300'
-          }`}
+          className={`p-3 whitespace-nowrap rounded-md text-sm sm:text-base ${activeTab === 'mortgage' ? 'bg-blue-500 text-white' : 'bg-gray-300'
+            }`}
         >
           Mortgage Calculator
         </button>
         <button
           onClick={() => handleTabClick('affordability')}
-          className={`p-3 ${
-            activeTab === 'affordability' ? 'bg-blue-500 text-white' : 'bg-gray-300'
-          }`}
+          className={`p-3 ${activeTab === 'affordability' ? 'bg-blue-500 text-white' : 'bg-gray-300'
+            }`}
         >
           Affordability Calculator
         </button>
         <button
           onClick={() => handleTabClick('rent')}
-          className={`p-3 ${
-            activeTab === 'rent' ? 'bg-blue-500 text-white' : 'bg-gray-300'
-          }`}
+          className={`p-3 ${activeTab === 'rent' ? 'bg-blue-500 text-white' : 'bg-gray-300'
+            }`}
         >
           Rent vs. Own
         </button>
         <button
           onClick={() => handleTabClick('comparison')}
-          className={`p-3 ${
-            activeTab === 'comparison' ? 'bg-blue-500 text-white' : 'bg-gray-300'
-          }`}
+          className={`p-3 ${activeTab === 'comparison' ? 'bg-blue-500 text-white' : 'bg-gray-300'
+            }`}
         >
           FHA Vs. Conventional Loan
         </button>
