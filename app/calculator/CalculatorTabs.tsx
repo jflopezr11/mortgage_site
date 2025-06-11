@@ -27,7 +27,7 @@ export default function CalculatorTabs({
       </h1>
 
       {/* Tab navigation */}
-      <div className="flex space-x-4 mb-8">
+      <div className="flex flex-wrap justify-center gap-2 mb-8 px-2 max-w-full overflow-x-auto">
         <button
           onClick={() => handleTabClick('mortgage')}
           className={`p-3 ${
