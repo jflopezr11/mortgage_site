@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import Image from 'next/image';
 
 export default function RentVsOwnLandingPage() {
-  const [formComplete, setFormComplete] = useState(true);
+  const [formComplete, setFormComplete] = useState(false);
   const [state, handleSubmit] = useForm("xpwrbyzz");
 
   useEffect(() => {
