@@ -1,8 +1,5 @@
 import { client } from '@/lib/sanityClient';
 import { howItWorksQuery } from '@/lib/queries';
-import RentVsOwn from './RentVsOwn';
-import MortgageCalculator from './MortgageCalculator';
-import AffordabilityCalculator from './AffordabilityCalculator';
 import Head from 'next/head';
 import CalculatorTabs from './CalculatorTabs';
 
