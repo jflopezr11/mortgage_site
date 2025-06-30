@@ -57,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link href="/contact" className="hover:text-blue-300">Contact</Link>
               </li>
               <li>
-                <Link href="/calculator" className="hover:text-blue-300">Mortgage Calculator</Link>
+                <Link href="/calculator" className="hover:text-blue-300">Calculators</Link>
               </li>
               <li>
                 <Link href="/blog" className="hover:text-blue-300">Visit My Blog</Link>
