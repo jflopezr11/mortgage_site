@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import MortgageCalculator from './MortgageCalculator';
 import AffordabilityCalculator from './AffordabilityCalculator';
-import RentVsOwn from './RentVsOwn';
+import RentVsOwn from '@/components/RentVsOwnCalculator';
 import FHAVsCon from './FhaVsConventionalCalculator';
 
 export default function CalculatorTabs({

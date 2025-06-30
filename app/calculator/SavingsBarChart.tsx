@@ -25,6 +25,7 @@ type SavingsBarChartProps = {
   totalOwnership: number;
   equityBuilt: number;
   netSavings: number;
+  timeHorizon: number;
 };
 
 export default function SavingsBarChart({
@@ -32,12 +33,13 @@ export default function SavingsBarChart({
   totalOwnership,
   equityBuilt,
   netSavings,
+  timeHorizon,
 }: SavingsBarChartProps) {
   const data = {
     labels: ["Total Rent", "Total Ownership", "Equity Built", "Net Savings"],
     datasets: [
       {
-        label: "5-Year Comparison ($)",
+        label: `${timeHorizon} Year Comparison ($)`,
         data: [totalRent, totalOwnership, equityBuilt, netSavings],
         backgroundColor: [
           "rgba(255, 99, 132, 0.7)",   // Rent
@@ -70,8 +72,9 @@ export default function SavingsBarChart({
       y: {
         beginAtZero: true,
         ticks: {
-          callback: function (value: any) {
-            return `$${value.toLocaleString()}`;
+          callback: function (value: number | string) {
+            const num = typeof value === "string" ? parseFloat(value) : value;
+            return `$${num.toLocaleString()}`;
           },
         },
       },
