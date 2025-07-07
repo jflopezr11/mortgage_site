@@ -48,7 +48,19 @@ export default function RentVsOwnLandingPage() {
       {!formComplete && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center">
           <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg w-full max-w-md mx-auto">
-            <h2 className="text-2xl font-semibold mb-4">Rent vs Own Calculator</h2>
+            <h2 className="text-2xl text-center font-semibold">Welcome!</h2>
+            <div className="flex justify-center my-10">
+              <Image 
+                src="/pictures/JLWebCard.png"
+                alt="Joshua Lopez headshot"
+                width={400}
+                height={400}
+                className="rounded-xl shadow-lg border-4 border-blue-900 w-full max-w-xs sm:max-w-sm md:max-w-md h-auto"
+              />
+            </div>
+            <div className = "pb-4">
+              <h3 className="text-center">Hi, I’m Joshua — I built this Rent vs Own Calculator to help you see what makes the most sense for your situation.</h3>
+            </div>
             <form
               onSubmit={handleSubmit}
               className="space-y-4"
