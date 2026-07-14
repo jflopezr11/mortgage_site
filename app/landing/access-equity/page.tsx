@@ -53,13 +53,13 @@ export default function AccessEquityLandingPage() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a
                   href="#equity-review-form"
-                  className="inline-flex items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-700/20 transition hover:bg-blue-800"
+                  className="inline-flex w-full items-center justify-center rounded-xl bg-blue-700 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-700/20 transition hover:bg-blue-800 sm:w-auto sm:py-3"
                 >
                   Request My Equity Review
                 </a>
                 <a
                   href="#quick-explanation"
-                  className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-blue-300 hover:text-blue-800"
+                  className="inline-flex w-full items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-blue-300 hover:text-blue-800 sm:w-auto sm:py-3"
                 >
                   Watch the quick explanation
                 </a>
@@ -99,26 +99,27 @@ export default function AccessEquityLandingPage() {
           id="quick-explanation"
           className="border-y border-slate-200 bg-white"
         >
-          <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+          <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 sm:py-14 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
             <div>
               <p className="text-sm font-semibold uppercase tracking-wide text-blue-800">
-                Before you decide
+                Start here
               </p>
               <h2 className="mt-3 text-3xl font-bold text-slate-950">
-                Watch this quick explanation before you decide.
+                Watch this quick equity review overview.
               </h2>
               <p className="mt-4 text-base leading-7 text-slate-700">
-                This short video area is intended to explain why a HELOC may be
-                different from replacing your current mortgage, and what details
-                are usually reviewed.
+                In this short video, Joshua explains what this equity review
+                is for, the options homeowners usually compare, and why the
+                goal is to help you decide if moving forward actually makes
+                sense.
               </p>
             </div>
-            <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-slate-950 shadow-xl">
+            <div className="relative w-full overflow-hidden rounded-3xl border border-slate-200 bg-slate-950 shadow-xl">
               <iframe
                 src="https://www.loom.com/embed/fadb527289d14ae2a684fb38fd6b2702"
                 title="Joshua Lopez explains how a HELOC may help you access equity without replacing your current mortgage"
                 allowFullScreen
-                className="aspect-video min-h-[240px] w-full"
+                className="aspect-video min-h-[280px] w-full"
               />
             </div>
           </div>
@@ -245,7 +246,7 @@ export default function AccessEquityLandingPage() {
         <section className="bg-white">
           <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-              <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+              <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:items-center sm:text-left">
                 <div className="relative h-36 w-36 overflow-hidden rounded-2xl border border-slate-200 bg-white sm:h-40 sm:w-40">
                   <Image
                     src="/pictures/joshua_headshot.jpg"
