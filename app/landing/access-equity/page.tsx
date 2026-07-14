@@ -114,20 +114,12 @@ export default function AccessEquityLandingPage() {
               </p>
             </div>
             <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-slate-950 shadow-xl">
-              {/* TODO: Replace this placeholder with the real Loom embed URL when ready. */}
-              <div className="flex aspect-video min-h-[240px] items-center justify-center bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.35),_transparent_45%),linear-gradient(135deg,_#0f172a,_#1e293b)] p-6 text-center text-white">
-                <div>
-                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-white/15 text-sm font-bold uppercase tracking-wide ring-1 ring-white/30">
-                    Play
-                  </div>
-                  <p className="text-lg font-semibold">
-                    Loom video placeholder
-                  </p>
-                  <p className="mt-2 text-sm text-slate-300">
-                    A real campaign video can be embedded here later.
-                  </p>
-                </div>
-              </div>
+              <iframe
+                src="https://www.loom.com/embed/fadb527289d14ae2a684fb38fd6b2702"
+                title="Joshua Lopez explains how a HELOC may help you access equity without replacing your current mortgage"
+                allowFullScreen
+                className="aspect-video min-h-[240px] w-full"
+              />
             </div>
           </div>
         </section>
