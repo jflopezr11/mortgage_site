@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check, Home, Search } from "lucide-react";
 
+const IDX_SEARCH_URL =
+  "https://joshualopez.gotrealestatesolutions.com/index.php?advanced=1&display=&min=400000&max=100000000&beds=0&baths=0&types%5B%5D=1&types%5B%5D=2&types%5B%5D=3&types%5B%5D=5&types%5B%5D=31&statuses%5B%5D=0&minfootage=0&maxfootage=30000&minacres=0&maxacres=0&yearbuilt=0&maxyearbuilt=0&walkscore=0&keywords=&polygons%5B%5D=-120.91003417968751%2C35.39800594715108%2C-116.89453125000001%2C36.81368259124586%2C-114.13696289062501%2C34.29353023058858%2C-114.71374511718751%2C33.445193134508465%2C-114.61486816406251%2C32.67174887226337%2C-117.16918945312501%2C32.54218257955074%2C-120.56945800781251%2C34.46127728843705%2C-120.91003417968751%2C35.39800594715108&sortby=listings.price+ASC&rtype=map";
+
 export const metadata: Metadata = {
   title: "California Real Estate Services | Joshua Lopez",
   description:
@@ -72,6 +75,48 @@ export default function RealEstatePage() {
               sizes="(max-width: 1023px) 90vw, 38vw"
               className="object-cover"
             />
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="border-b border-slate-200 py-14 sm:py-16"
+        aria-labelledby="idx-search-heading"
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-start gap-6 rounded-3xl border border-blue-100 bg-blue-50 p-7 sm:flex-row sm:items-center sm:justify-between sm:p-9">
+            <div className="max-w-2xl">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-900">
+                <Search className="h-6 w-6" aria-hidden="true" />
+              </div>
+              <h2
+                id="idx-search-heading"
+                className="mt-5 text-2xl font-extrabold tracking-tight text-blue-950 sm:text-3xl"
+              >
+                Search Available Properties
+              </h2>
+              <p className="mt-3 text-base leading-7 text-slate-700 sm:text-lg sm:leading-8">
+                Browse current MLS listings using Joshua’s property-search
+                platform—filter by price, location, and property type, then
+                save your favorite searches.
+              </p>
+            </div>
+
+            <div className="flex flex-shrink-0 flex-col items-start gap-3 sm:items-end">
+              <a
+                href={IDX_SEARCH_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-blue-900 px-6 py-3 font-bold text-white shadow-sm transition hover:bg-blue-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 focus-visible:ring-offset-2"
+              >
+                Search Homes
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+              <p className="text-xs font-semibold text-slate-600">
+                Property search opens on the Got Real Estate Solutions MLS
+                platform.
+              </p>
+            </div>
           </div>
         </div>
       </section>
