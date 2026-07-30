@@ -55,7 +55,7 @@ export default function RealEstatePage() {
               Joshua Lopez <span aria-hidden="true">|</span> DRE #02436480
             </p>
             <Link
-              href="/contact"
+              href="/contact?service=real-estate"
               className="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-blue-900 px-6 py-3 font-bold text-white shadow-sm transition hover:bg-blue-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 focus-visible:ring-offset-2"
             >
               Talk About Buying or Selling
@@ -140,7 +140,7 @@ export default function RealEstatePage() {
             useful next step.
           </p>
           <Link
-            href="/contact"
+            href="/contact?service=real-estate"
             className="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-blue-900 px-7 py-3 font-bold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 focus-visible:ring-offset-2"
           >
             Contact Joshua
