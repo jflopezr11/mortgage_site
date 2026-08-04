@@ -3,6 +3,12 @@
 import { useEffect, useState } from "react";
 import { useForm, ValidationError } from "@formspree/react";
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 type LeadType = "buyer" | "seller" | "mortgage" | "general" | "";
 
 type HelpOption = {
@@ -280,6 +286,19 @@ export default function ContactForm({
 
   const leadTypeValue = leadType ? LEAD_TYPE_VALUE[leadType] : "";
   const subjectValue = leadType ? SUBJECT_VALUE[leadType] : "";
+
+  // Fires once, only after Formspree confirms the submission succeeded —
+  // never on submit-button click — so this reflects a real completed lead,
+  // not just an attempt. `lead_type` lets this single GA4 event be filtered
+  // into buyer / seller / mortgage / general inquiry conversions.
+  useEffect(() => {
+    if (state.succeeded) {
+      window.gtag?.("event", "contact_form_submit", {
+        lead_type: leadTypeValue,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.succeeded]);
 
   if (state.succeeded) {
     return (

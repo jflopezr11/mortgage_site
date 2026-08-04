@@ -18,6 +18,11 @@ export const getAllPostsQuery = groq`*[_type == "post" && defined(slug.current) 
 
 
 
+export const getSitemapPostsQuery = groq`*[_type == "post" && defined(slug.current) && publishedAt < now()]{
+  "slug": slug.current,
+  _updatedAt
+} | order(publishedAt desc)`
+
 export const getLoanProgramsQuery = groq`
   *[_type == "loanProgram"] | order(createdAt desc) {
     _id,

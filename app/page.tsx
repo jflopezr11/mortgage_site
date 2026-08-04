@@ -13,11 +13,72 @@ import {
   Search,
   WalletCards,
 } from "lucide-react";
+import StructuredData from "@/components/StructuredData";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "Joshua Lopez | California Mortgage and Real Estate";
+const DESCRIPTION =
+  "Clear mortgage and real estate guidance from Joshua Lopez, NMLS #2230624 and DRE #02436480.";
 
 export const metadata: Metadata = {
-  title: "Joshua Lopez | California Mortgage and Real Estate",
-  description:
-    "Clear mortgage and real estate guidance from Joshua Lopez, NMLS #2230624 and DRE #02436480.",
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "/",
+    images: [{ url: "/pictures/outsideHeadshot.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/pictures/outsideHeadshot.jpg"],
+  },
+};
+
+// Sourced only from facts already visible elsewhere on the site (name,
+// NMLS/DRE license numbers, and the two named affiliations in the footer).
+// No address, phone, hours, reviews, or social profiles are included
+// because none are established anywhere in this project.
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
+      name: "Joshua Lopez",
+      url: SITE_URL,
+      jobTitle: "Mortgage Loan Officer and Real Estate Salesperson",
+      affiliation: [
+        { "@type": "Organization", name: "Got Mortgage Solutions" },
+        { "@type": "Organization", name: "Got Real Estate Solutions" },
+      ],
+      hasCredential: [
+        {
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: "license",
+          name: "NMLS #2230624",
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: "license",
+          name: "California DRE #02436480",
+        },
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: TITLE,
+      publisher: { "@id": `${SITE_URL}/#person` },
+    },
+  ],
 };
 
 const primaryButton =
@@ -67,6 +128,7 @@ const resources = [
 export default function Home() {
   return (
     <div className="bg-white text-slate-900">
+      <StructuredData json={structuredData} />
       <section className="border-b border-blue-100 bg-blue-50">
         <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.08fr_0.92fr] lg:px-8 lg:py-20">
           <div className="min-w-0">

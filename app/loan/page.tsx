@@ -1,29 +1,40 @@
-"use client";
+import type { Metadata } from "next";
+import LoanApplicationEmbed from "@/components/LoanApplicationEmbed";
+
+const TITLE = "Apply for Financing | Joshua Lopez";
+const DESCRIPTION =
+  "Start a mortgage application with Joshua Lopez, NMLS #2230624, through the secure Got Mortgage Solutions application portal.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: {
+    canonical: "/loan",
+  },
+  // This page is a bare full-screen iframe into a third-party LendingPad
+  // application (see components/LoanApplicationEmbed.tsx) — it has no
+  // standalone content for search engines to index or usefully rank. It
+  // exists purely as a click-through destination from internal "Apply" /
+  // "Explore Mortgage Options" links, so it is kept out of search results
+  // and out of the sitemap, but left crawlable (follow) since it is still
+  // a legitimate, permanent page rather than a broken or temporary one.
+  robots: {
+    index: false,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "/loan",
+  },
+  twitter: {
+    card: "summary",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+};
 
 export default function LoanPage() {
-  return (
-    <div style={{ 
-      width: "100vw", 
-      height: "100vh", 
-      display: "flex", 
-      justifyContent: "center", 
-      alignItems: "center",
-      overflow: "hidden"
-    }}>
-      <iframe
-        src="https://prod.lendingpad.com/got-mortgage-solutions-investments-inc/pos#/?loid=71d6f637-4e06-4c0a-9203-fde777a38638"
-        style={{
-          width: "100%",
-          height: "100%",
-          //maxWidth: "1440px",  // Limits width for better centering
-          //maxHeight: "900px",   // Ensures it's not too tall
-          border: "none",
-        }}
-      />
-    </div>
-  );
+  return <LoanApplicationEmbed />;
 }
-
-  
-
-  

@@ -1,10 +1,27 @@
 import type { Metadata } from "next";
 import ContactForm from "@/components/ContactForm";
 
+const TITLE = "Contact Joshua Lopez | Mortgage and Real Estate";
+const DESCRIPTION =
+  "Tell Joshua whether you're looking to buy, sell, finance, or simply ask a question, and he'll follow up with a practical next step.";
+
 export const metadata: Metadata = {
-  title: "Contact Joshua Lopez | Mortgage and Real Estate",
-  description:
-    "Tell Joshua whether you're looking to buy, sell, finance, or simply ask a question, and he'll follow up with a practical next step.",
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: {
+    canonical: "/contact",
+  },
+  openGraph: {
+    type: "website",
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "/contact",
+  },
+  twitter: {
+    card: "summary",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
 };
 
 export default function Contact({

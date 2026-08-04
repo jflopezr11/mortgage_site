@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { client } from '@/lib/sanityClient'
 import { getAllPostsQuery } from '@/lib/queries'
 import Image from 'next/image'
@@ -14,6 +15,29 @@ const query = groq`*[_type == "post"]{
   coverImage,
   excerpt
 } | order(publishedAt desc)`
+
+const TITLE = "Mortgage and Real Estate Articles | Joshua Lopez";
+const DESCRIPTION =
+  "Guidance on mortgages, home buying, and refinancing from Joshua Lopez, California mortgage and real estate professional.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: {
+    canonical: "/blog",
+  },
+  openGraph: {
+    type: "website",
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "/blog",
+  },
+  twitter: {
+    card: "summary",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+};
 
 export const revalidate = 60 // seconds
 

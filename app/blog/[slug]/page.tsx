@@ -3,7 +3,9 @@ import { groq } from 'next-sanity'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import StructuredData from '@/components/StructuredData'
+import { SITE_URL } from '@/lib/site'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60
@@ -21,6 +23,8 @@ const getPostQuery = groq`
   }
 `
 
+const DEFAULT_OG_IMAGE = `${SITE_URL}/pictures/outsideHeadshot.jpg`
+
 export async function generateMetadata({
   params,
 }: {
@@ -28,21 +32,39 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const post = await client.fetch(getPostQuery, { slug: params.slug })
 
+  if (!post) {
+    return {
+      title: 'Post Not Found | Joshua Lopez',
+      robots: { index: false, follow: true },
+    }
+  }
+
+  const description = post.body?.[0]?.children?.[0]?.text || post.title
+
   return {
-    title: `${post.title} | Josh Lopez Loans`,
-    description: post.body?.[0]?.children?.[0]?.text || post.title,
+    title: `${post.title} | Joshua Lopez`,
+    description,
+    alternates: {
+      canonical: `/blog/${params.slug}`,
+    },
     openGraph: {
       title: post.title,
-      description: post.body?.[0]?.children?.[0]?.text || post.title,
+      description,
       type: 'article',
-      url: `https://joshualopezloans.com/blog/${params.slug}`,
+      url: `${SITE_URL}/blog/${params.slug}`,
       images: [
         {
-          url: post.coverImage?.asset?.url || 'https://joshualopezloans.com/default-og.jpg',
+          url: post.coverImage?.asset?.url || DEFAULT_OG_IMAGE,
           width: 1200,
           height: 630,
         },
       ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description,
+      images: [post.coverImage?.asset?.url || DEFAULT_OG_IMAGE],
     },
   }
 }
@@ -55,7 +77,7 @@ export default async function BlogPostPage({
   const post = await client.fetch(getPostQuery, { slug: params.slug })
 
   if (!post) {
-    return <div className="p-6 text-red-600 text-xl">Post not found.</div>
+    notFound()
   }
 
   const structuredDataJson: Record<string, any> = {
@@ -66,7 +88,7 @@ export default async function BlogPostPage({
     image: post.coverImage?.asset?.url || '',
     author: {
       '@type': 'Person',
-      name: 'Josh Lopez',
+      name: 'Joshua Lopez',
     },
     datePublished: post.publishedAt || '',
   }
