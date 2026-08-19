@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useForm, ValidationError } from "@formspree/react";
+import SmsConsentDisclosure from "@/components/SmsConsentDisclosure";
 
 declare global {
   interface Window {
@@ -257,6 +258,7 @@ export default function ContactForm({
     initialAmbiguous
   );
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA);
+  const [smsConsent, setSmsConsent] = useState(false);
   const [pageUrl, setPageUrl] = useState("");
 
   useEffect(() => {
@@ -686,6 +688,12 @@ export default function ContactForm({
             type="hidden"
             name="sourceParam"
             value={initialService ?? "direct"}
+          />
+
+          <SmsConsentDisclosure
+            id="contact-form-sms-consent"
+            checked={smsConsent}
+            onChange={setSmsConsent}
           />
 
           {state.errors && !state.submitting && (

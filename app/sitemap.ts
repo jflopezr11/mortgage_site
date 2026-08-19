@@ -14,6 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/real-estate` },
     { url: `${SITE_URL}/calculator` },
     { url: `${SITE_URL}/contact` },
+    { url: `${SITE_URL}/privacy-policy` },
     { url: `${SITE_URL}/blog` },
     { url: `${SITE_URL}/landing/rent-vs-own` },
     { url: `${SITE_URL}/landing/book-a-call` },

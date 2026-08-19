@@ -2,9 +2,12 @@
 
 import { useForm, ValidationError } from "@formspree/react";
 import Image from "next/image";
+import { useState } from "react";
+import SmsConsentDisclosure from "@/components/SmsConsentDisclosure";
 
 export default function HelocAccessLandingContent() {
   const [state, handleSubmit] = useForm("mdkqdnrp");
+  const [smsConsent, setSmsConsent] = useState(false);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -70,9 +73,9 @@ export default function HelocAccessLandingContent() {
                       Thank you — check your inbox.
                     </h3>
                     <p className="text-sm text-slate-700">
-                      I’ve received your info. I’ll review your numbers and text
-                      or email you with your estimated HELOC range and next
-                      steps, usually the same business day.
+                      I’ve received your info. I’ll review your numbers and
+                      email you—or text you if you consented—with your estimated
+                      HELOC range and next steps, usually the same business day.
                     </p>
                   </div>
                 ) : (
@@ -227,20 +230,11 @@ export default function HelocAccessLandingContent() {
                     />
 
                     
-                    <div className="flex items-start gap-2">
-                      <input
-                        type="checkbox"
-                        name="smsConsent"
-                        required
-                        className="mt-1 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600"
-                      />
-                      <p className="text-xs text-slate-600">
-                        I agree that Joshua Lopez and GOT Mortgage Solutions may
-                        contact me by phone, email, and text message about my
-                        HELOC options. Message and data rates may apply. I can
-                        opt out at any time.
-                      </p>
-                    </div>
+                    <SmsConsentDisclosure
+                      id="heloc-access-sms-consent"
+                      checked={smsConsent}
+                      onChange={setSmsConsent}
+                    />
 
                     <button
                       type="submit"

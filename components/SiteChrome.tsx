@@ -167,7 +167,14 @@ export default function SiteChrome({
         </div>
 
         <div className="border-t border-blue-900 px-4 py-5 text-center text-sm text-blue-200">
-          © 2026 Joshua Lopez. All rights reserved.
+          © 2026 Joshua Lopez. All rights reserved.{" "}
+          <span aria-hidden="true">|</span>{" "}
+          <Link
+            href="/privacy-policy"
+            className="rounded-sm transition hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-200"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </footer>
     </>

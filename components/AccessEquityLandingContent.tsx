@@ -2,9 +2,12 @@
 
 import { useForm, ValidationError } from "@formspree/react";
 import Image from "next/image";
+import { useState } from "react";
+import SmsConsentDisclosure from "@/components/SmsConsentDisclosure";
 
 export default function AccessEquityLandingContent() {
   const [state, handleSubmit] = useForm("xdaqkwde");
+  const [smsConsent, setSmsConsent] = useState(false);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-900">
@@ -302,8 +305,8 @@ export default function AccessEquityLandingContent() {
                     Thank you. Your request was received.
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-slate-700">
-                    Joshua will review your information and follow up by text,
-                    phone, or email.
+                    Joshua will review your information and follow up by phone
+                    or email and, if you consented, text.
                   </p>
                 </div>
               ) : (
@@ -452,20 +455,11 @@ export default function AccessEquityLandingContent() {
                     value="HELOC Equity Mailer - Access Equity"
                   />
 
-                  <div className="flex items-start gap-2 rounded-2xl bg-slate-50 p-3">
-                    <input
-                      type="checkbox"
-                      name="smsConsent"
-                      required
-                      className="mt-1 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600"
-                    />
-                    <p className="text-xs leading-5 text-slate-600">
-                      I agree that Joshua Lopez and GOT Mortgage Solutions may
-                      contact me by phone, email, and text message about my
-                      home equity options. Message and data rates may apply. I
-                      can opt out at any time.
-                    </p>
-                  </div>
+                  <SmsConsentDisclosure
+                    id="access-equity-sms-consent"
+                    checked={smsConsent}
+                    onChange={setSmsConsent}
+                  />
 
                   <button
                     type="submit"
