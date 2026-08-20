@@ -37,6 +37,10 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 
 const formatCurrency = (value: number) => currencyFormatter.format(value);
 
+const percentageFormatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 2,
+});
+
 const generateAmortizationSchedule = (
   loanAmount: number,
   monthlyPayment: number,
@@ -67,10 +71,11 @@ const inputClassName = (hasError: boolean) =>
 
 export default function MortgageCalculator() {
   const [loanType, setLoanType] = useState<LoanType>("conventional");
+  const [firstTimeHomebuyer, setFirstTimeHomebuyer] = useState(false);
   const [purchasePrice, setPurchasePrice] = useState("");
   const [downPaymentType, setDownPaymentType] =
     useState<DownPaymentType>("percentage");
-  const [downPayment, setDownPayment] = useState("");
+  const [downPayment, setDownPayment] = useState("5");
   const [interestRate, setInterestRate] = useState("");
   const [loanTerm, setLoanTerm] = useState("");
   const [propertyTaxRate, setPropertyTaxRate] = useState("1.25");
@@ -82,6 +87,7 @@ export default function MortgageCalculator() {
     () =>
       calculateMortgage({
         loanType,
+        firstTimeHomebuyer,
         purchasePrice,
         downPaymentType,
         downPayment,
@@ -93,6 +99,7 @@ export default function MortgageCalculator() {
       }),
     [
       loanType,
+      firstTimeHomebuyer,
       purchasePrice,
       downPaymentType,
       downPayment,
@@ -169,6 +176,52 @@ export default function MortgageCalculator() {
     setHasSubmitted(true);
   };
 
+  const minimumDownPaymentPercentage =
+    loanType === "fha" ? 3.5 : firstTimeHomebuyer ? 3 : 5;
+  const parsedPurchasePrice = Number(purchasePrice);
+  const minimumDownPayment =
+    downPaymentType === "percentage"
+      ? minimumDownPaymentPercentage
+      : Number.isFinite(parsedPurchasePrice) && parsedPurchasePrice > 0
+        ? parsedPurchasePrice * (minimumDownPaymentPercentage / 100)
+        : 0;
+
+  const clampDownPayment = (
+    nextLoanType: LoanType,
+    nextFirstTimeHomebuyer: boolean,
+    value = downPayment
+  ) => {
+    if (value.trim() === "") return;
+
+    const parsedValue = Number(value);
+    if (!Number.isFinite(parsedValue)) return;
+
+    const minimumPercentage =
+      nextLoanType === "fha" ? 3.5 : nextFirstTimeHomebuyer ? 3 : 5;
+    const minimumValue =
+      downPaymentType === "percentage"
+        ? minimumPercentage
+        : Number.isFinite(parsedPurchasePrice) && parsedPurchasePrice > 0
+          ? parsedPurchasePrice * (minimumPercentage / 100)
+          : null;
+
+    if (minimumValue !== null && parsedValue < minimumValue) {
+      setDownPayment(
+        downPaymentType === "percentage" ? String(minimumValue) : minimumValue.toFixed(2)
+      );
+    }
+  };
+
+  const selectLoanType = (type: LoanType) => {
+    setLoanType(type);
+    clampDownPayment(type, firstTimeHomebuyer);
+  };
+
+  const toggleFirstTimeHomebuyer = (checked: boolean) => {
+    setFirstTimeHomebuyer(checked);
+    clampDownPayment("conventional", checked);
+  };
+
   const fieldProps = (field: MortgageField) => ({
     "aria-invalid": Boolean(errors[field]),
     "aria-describedby": errors[field] ? `${field}-error` : undefined,
@@ -192,7 +245,7 @@ export default function MortgageCalculator() {
                   name="loanType"
                   value={type}
                   checked={loanType === type}
-                  onChange={() => setLoanType(type)}
+                  onChange={() => selectLoanType(type)}
                   className="sr-only"
                 />
                 {type === "conventional" ? "Conventional" : "FHA"}
@@ -240,12 +293,29 @@ export default function MortgageCalculator() {
             placeholder={downPaymentType === "percentage" ? "Down Payment (%)" : "Down Payment ($)"}
             value={downPayment}
             onChange={(event) => setDownPayment(event.target.value)}
+            onBlur={(event) => clampDownPayment(loanType, firstTimeHomebuyer, event.target.value)}
             className={inputClassName(Boolean(errors.downPayment))}
-            min="0"
+            min={minimumDownPayment}
             step="any"
             {...fieldProps("downPayment")}
           />
           <div id="downPayment-error"><FieldError message={errors.downPayment} /></div>
+          {loanType === "conventional" && (
+            <div className="mt-2">
+              <label className="flex items-center gap-2 text-sm text-gray-700">
+                <input
+                  type="checkbox"
+                  checked={firstTimeHomebuyer}
+                  onChange={(event) => toggleFirstTimeHomebuyer(event.target.checked)}
+                  className="h-4 w-4 rounded border-gray-300"
+                />
+                First-time homebuyer
+              </label>
+              <p className="mt-1 text-xs leading-relaxed text-gray-600">
+                3% down conventional financing is subject to borrower and program eligibility.
+              </p>
+            </div>
+          )}
         </div>
 
         <div>
@@ -415,22 +485,30 @@ function MortgageResults({ loanType, result }: { loanType: LoanType; result: Mor
         ))}
       </dl>
 
-      {loanType === "fha" && (
-        <dl className="mt-5 space-y-2 border-t border-blue-100 pt-4">
-          <div className="flex items-center justify-between gap-4">
-            <dt className="text-sm text-gray-700">Base loan amount</dt>
-            <dd className="font-medium">{formatCurrency(result.baseLoanAmount)}</dd>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <dt className="text-sm text-gray-700">Upfront FHA MIP (financed)</dt>
-            <dd className="font-medium">{formatCurrency(result.upfrontFhaMip)}</dd>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <dt className="text-sm text-gray-700">Financed FHA loan amount</dt>
-            <dd className="font-medium">{formatCurrency(result.financedLoanAmount)}</dd>
-          </div>
-        </dl>
-      )}
+      <dl className="mt-5 space-y-2 border-t border-blue-100 pt-4">
+        <div className="flex items-center justify-between gap-4">
+          <dt className="text-sm text-gray-700">
+            Down payment ({percentageFormatter.format(result.downPaymentPercentage)}%)
+          </dt>
+          <dd className="font-medium">{formatCurrency(result.downPaymentAmount)}</dd>
+        </div>
+        <div className="flex items-center justify-between gap-4">
+          <dt className="text-sm text-gray-700">Base loan amount</dt>
+          <dd className="font-medium">{formatCurrency(result.baseLoanAmount)}</dd>
+        </div>
+        {loanType === "fha" && (
+          <>
+            <div className="flex items-center justify-between gap-4">
+              <dt className="text-sm text-gray-700">Upfront FHA MIP (financed)</dt>
+              <dd className="font-medium">{formatCurrency(result.upfrontFhaMip)}</dd>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <dt className="text-sm text-gray-700">Financed FHA loan amount</dt>
+              <dd className="font-medium">{formatCurrency(result.financedLoanAmount)}</dd>
+            </div>
+          </>
+        )}
+      </dl>
 
       {loanType === "fha" && (
         <p className="mt-3 text-xs leading-relaxed text-gray-600">

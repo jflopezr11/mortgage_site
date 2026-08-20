@@ -7,6 +7,7 @@ export type DownPaymentType = "percentage" | "fixed";
 
 export type MortgageInputs = {
   loanType: LoanType;
+  firstTimeHomebuyer: boolean;
   purchasePrice: string;
   downPaymentType: DownPaymentType;
   downPayment: string;
@@ -17,10 +18,15 @@ export type MortgageInputs = {
   hoaFees: string;
 };
 
-export type MortgageField = Exclude<keyof MortgageInputs, "loanType" | "downPaymentType">;
+export type MortgageField = Exclude<
+  keyof MortgageInputs,
+  "loanType" | "downPaymentType" | "firstTimeHomebuyer"
+>;
 export type MortgageErrors = Partial<Record<MortgageField, string>>;
 
 export type MortgageResult = {
+  downPaymentAmount: number;
+  downPaymentPercentage: number;
   baseLoanAmount: number;
   upfrontFhaMip: number;
   financedLoanAmount: number;
@@ -116,8 +122,16 @@ export function calculateMortgage(inputs: MortgageInputs): MortgageCalculation {
       errors.downPayment = "Enter a valid down payment.";
     } else if (downPaymentAmount > price) {
       errors.downPayment = "Down payment cannot exceed the purchase price.";
-    } else if (inputs.loanType === "fha" && downPaymentAmount < price * 0.035) {
-      errors.downPayment = "FHA loans require a down payment of at least 3.5%.";
+    } else {
+      const minimumDownPaymentPercentage =
+        inputs.loanType === "fha" ? 3.5 : inputs.firstTimeHomebuyer ? 3 : 5;
+
+      if (downPaymentAmount < price * (minimumDownPaymentPercentage / 100)) {
+        errors.downPayment =
+          inputs.loanType === "fha"
+            ? "FHA loans require a down payment of at least 3.5%."
+            : `Conventional loans require a down payment of at least ${minimumDownPaymentPercentage}%.`;
+      }
     }
   }
 
@@ -177,6 +191,8 @@ export function calculateMortgage(inputs: MortgageInputs): MortgageCalculation {
   return {
     errors: {},
     result: {
+      downPaymentAmount,
+      downPaymentPercentage: (downPaymentAmount / validPrice) * 100,
       baseLoanAmount,
       upfrontFhaMip,
       financedLoanAmount,
