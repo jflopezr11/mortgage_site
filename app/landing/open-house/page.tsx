@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import OpenHouseLandingContent from "@/components/OpenHouseLandingContent";
+import { localizedAlternates } from "@/lib/i18n/config";
 
 const TITLE = "26671 Evergreen Crest Circle | Joshua Lopez";
 const DESCRIPTION =
@@ -8,9 +9,7 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: {
-    canonical: "/landing/open-house",
-  },
+  alternates: localizedAlternates("openHouse", "en"),
   robots: {
     index: false,
     follow: true,
@@ -20,6 +19,8 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: "/landing/open-house",
+    locale: "en_US",
+    alternateLocale: "es_US",
   },
   twitter: {
     card: "summary",
@@ -29,5 +30,5 @@ export const metadata: Metadata = {
 };
 
 export default function OpenHouseLandingPage() {
-  return <OpenHouseLandingContent />;
+  return <OpenHouseLandingContent locale="en" />;
 }

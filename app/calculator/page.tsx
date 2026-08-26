@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { client } from '@/lib/sanityClient';
 import { howItWorksQuery } from '@/lib/queries';
 import CalculatorTabs from './CalculatorTabs';
+import { localizedAlternates } from '@/lib/i18n/config';
 
 const TITLE = "Mortgage Calculator | Joshua Lopez";
 const DESCRIPTION =
@@ -11,14 +12,14 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   keywords: ["mortgage calculator", "home loan", "loan payments", "mortgage estimate"],
-  alternates: {
-    canonical: "/calculator",
-  },
+  alternates: localizedAlternates("calculator", "en"),
   openGraph: {
     type: "website",
     title: TITLE,
     description: DESCRIPTION,
     url: "/calculator",
+    locale: "en_US",
+    alternateLocale: "es_US",
   },
   twitter: {
     card: "summary",
@@ -39,6 +40,7 @@ export default async function CalculatorPage() {
   return (
     <div className="flex flex-col items-center mt-10">
       <CalculatorTabs
+        locale="en"
         howItWorksContent={{
           rent: rentVsOwnContent,
           comparison: fhaVsConventionalContent,

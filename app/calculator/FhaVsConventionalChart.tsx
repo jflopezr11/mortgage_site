@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import type { Locale } from "@/lib/i18n/config";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -18,6 +19,7 @@ type Props = {
   convMonthlyPayment: number;
   fhaUpfrontCash: number;
   convUpfrontCash: number;
+  locale?: Locale;
 };
 
 // Renders the exact figures shown in the written results above it — no
@@ -28,9 +30,10 @@ export default function FhaVsConventionalChart({
   convMonthlyPayment,
   fhaUpfrontCash,
   convUpfrontCash,
+  locale = "en",
 }: Props) {
   const data = {
-    labels: ["Est. Total Monthly Payment", "Est. Upfront Cash Required"],
+    labels: locale === "es" ? ["Pago mensual total estimado", "Efectivo inicial estimado"] : ["Est. Total Monthly Payment", "Est. Upfront Cash Required"],
     datasets: [
       {
         label: "FHA",
@@ -40,7 +43,7 @@ export default function FhaVsConventionalChart({
         borderWidth: 1,
       },
       {
-        label: "Conventional",
+        label: locale === "es" ? "Convencional" : "Conventional",
         data: [convMonthlyPayment, convUpfrontCash],
         backgroundColor: "rgba(16, 185, 129, 0.7)",
         borderColor: "rgba(16, 185, 129, 1)",
@@ -55,7 +58,7 @@ export default function FhaVsConventionalChart({
       legend: { display: true, position: "top" as const },
       title: {
         display: true,
-        text: "FHA vs. Conventional — Payment and Upfront Cash",
+        text: locale === "es" ? "FHA vs. convencional — pago y efectivo inicial" : "FHA vs. Conventional — Payment and Upfront Cash",
         font: { size: 16 },
       },
     },

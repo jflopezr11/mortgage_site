@@ -12,21 +12,23 @@ import {
   Legend,
 } from "chart.js";
 import type { YearPoint } from "./rentVsOwnMath";
+import type { Locale } from "@/lib/i18n/config";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 type Props = {
   yearlySeries: YearPoint[];
+  locale?: Locale;
 };
 
 // Plots the exact cumulative net-cost figures from the calculation results —
 // no separate recalculation — and stays stable when a value is $0.
-export default function RentVsOwnNetCostChart({ yearlySeries }: Props) {
+export default function RentVsOwnNetCostChart({ yearlySeries, locale = "en" }: Props) {
   const data = {
-    labels: yearlySeries.map((point) => `Year ${point.year}`),
+    labels: yearlySeries.map((point) => `${locale === "es" ? "Año" : "Year"} ${point.year}`),
     datasets: [
       {
-        label: "Renting — Net Cost",
+        label: locale === "es" ? "Alquilar — costo neto" : "Renting — Net Cost",
         data: yearlySeries.map((point) => Math.round(point.cumulativeRentingNetCost)),
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.15)",
@@ -34,7 +36,7 @@ export default function RentVsOwnNetCostChart({ yearlySeries }: Props) {
         tension: 0.2,
       },
       {
-        label: "Owning — Net Cost",
+        label: locale === "es" ? "Comprar — costo neto" : "Owning — Net Cost",
         data: yearlySeries.map((point) => Math.round(point.cumulativeOwningNetCost)),
         borderColor: "rgba(37, 99, 235, 1)",
         backgroundColor: "rgba(37, 99, 235, 0.15)",
@@ -51,7 +53,7 @@ export default function RentVsOwnNetCostChart({ yearlySeries }: Props) {
       legend: { display: true, position: "top" as const },
       title: {
         display: true,
-        text: "Year-by-Year Estimated Net Housing Cost",
+        text: locale === "es" ? "Costo neto estimado por año" : "Year-by-Year Estimated Net Housing Cost",
         font: { size: 16 },
       },
     },

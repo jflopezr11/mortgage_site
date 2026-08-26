@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import Script from "next/script";
 import SiteChrome from "@/components/SiteChrome";
+import { LOCALE_HEADER, type Locale } from "@/lib/i18n/config";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -53,8 +55,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const locale = (headers().get(LOCALE_HEADER) === "es" ? "es" : "en") as Locale;
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className="flex min-h-screen max-w-full flex-col overflow-x-hidden">
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-BXDCXM0NW6"
@@ -69,7 +73,7 @@ export default function RootLayout({
           `}
         </Script>
 
-        <SiteChrome>{children}</SiteChrome>
+        <SiteChrome locale={locale}>{children}</SiteChrome>
       </body>
     </html>
   );

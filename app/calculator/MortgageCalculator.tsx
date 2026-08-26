@@ -18,6 +18,7 @@ import {
   type MortgageField,
   type MortgageResult,
 } from "./mortgageCalculations";
+import type { Locale } from "@/lib/i18n/config";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -69,7 +70,13 @@ const FieldError = ({ message }: { message?: string }) =>
 const inputClassName = (hasError: boolean) =>
   `mt-1 w-full rounded border p-2 ${hasError ? "border-red-500" : "border-gray-300"}`;
 
-export default function MortgageCalculator() {
+const mortgageCopy = {
+  en: { loanType: "Loan Type", conventional: "Conventional", purchasePrice: "Purchase Price", downType: "Down Payment Type", percentage: "Percentage (%)", fixed: "Fixed Amount ($)", down: "Down Payment", firstTime: "First-time homebuyer", firstTimeNote: "3% down conventional financing is subject to borrower and program eligibility.", rate: "Interest Rate (%)", term: "Loan Term (Years)", tax: "Property Tax Rate (%)", insurance: "Homeowners Insurance ($/month)", hoa: "HOA Fees ($/month)", calculate: "Calculate", correct: "Please correct the highlighted fields to calculate your estimate.", chart: "Estimated Monthly Payment Breakdown", amortization: "Amortization Schedule", month: "Month", interestPayment: "Interest Payment", principalPayment: "Principal Payment", balance: "Remaining Balance", disclaimer: "This calculator provides an educational estimate only. Actual payments, rates, taxes, insurance, mortgage insurance, closing costs, and qualification requirements may vary. This is not a Loan Estimate, approval, or commitment to lend.", total: "Estimated Total Monthly Housing Payment", principal: "Principal and interest", taxes: "Property taxes", homeowners: "Homeowners insurance", fhaInsurance: "Estimated FHA mortgage insurance", pmi: "Estimated PMI", downPayment: "Down payment", baseLoan: "Base loan amount", upfrontMip: "Upfront FHA MIP (financed)", financedLoan: "Financed FHA loan amount", fhaNote: "The upfront FHA MIP is financed into the loan balance and is not added as a monthly expense.", pmiNote: "Estimated PMI based on an assumed annual rate. Actual PMI depends on credit, loan structure, and the mortgage-insurance provider.", fhaEstimateNote: "Estimated FHA mortgage insurance uses an assumed annual rate. Actual FHA MIP may vary based on the loan amount, term, loan-to-value ratio, and current FHA requirements.", fieldError: "Review this value." },
+  es: { loanType: "Tipo de préstamo", conventional: "Convencional", purchasePrice: "Precio de compra", downType: "Tipo de pago inicial", percentage: "Porcentaje (%)", fixed: "Monto fijo ($)", down: "Pago inicial", firstTime: "Comprador por primera vez", firstTimeNote: "El financiamiento convencional con 3% de pago inicial está sujeto a la elegibilidad del prestatario y del programa.", rate: "Tasa de interés (%)", term: "Plazo del préstamo (años)", tax: "Tasa de impuesto a la propiedad (%)", insurance: "Seguro de vivienda ($/mes)", hoa: "Cuotas de HOA ($/mes)", calculate: "Calcular", correct: "Corrija los campos resaltados para calcular su estimación.", chart: "Desglose del pago mensual estimado", amortization: "Tabla de amortización", month: "Mes", interestPayment: "Pago de intereses", principalPayment: "Pago de capital", balance: "Saldo restante", disclaimer: "Esta calculadora ofrece únicamente una estimación educativa. Los pagos, tasas, impuestos, seguros, seguro hipotecario, costos de cierre y requisitos reales pueden variar. No es una Estimación de Préstamo, aprobación ni compromiso de prestar.", total: "Pago mensual total estimado de vivienda", principal: "Capital e intereses", taxes: "Impuestos a la propiedad", homeowners: "Seguro de vivienda", fhaInsurance: "Seguro hipotecario FHA estimado", pmi: "PMI estimado", downPayment: "Pago inicial", baseLoan: "Monto base del préstamo", upfrontMip: "MIP inicial de FHA (financiado)", financedLoan: "Monto financiado del préstamo FHA", fhaNote: "El MIP inicial de FHA se financia dentro del saldo y no se agrega como gasto mensual.", pmiNote: "El PMI estimado usa una tasa anual supuesta. El PMI real depende del crédito, la estructura del préstamo y el proveedor del seguro.", fhaEstimateNote: "El seguro hipotecario FHA estimado usa una tasa anual supuesta. El MIP real puede variar según el monto, plazo, relación préstamo-valor y requisitos vigentes de FHA.", fieldError: "Revise este valor." },
+} as const;
+
+export default function MortgageCalculator({ locale = "en" }: { locale?: Locale }) {
+  const copy = mortgageCopy[locale];
   const [loanType, setLoanType] = useState<LoanType>("conventional");
   const [firstTimeHomebuyer, setFirstTimeHomebuyer] = useState(false);
   const [purchasePrice, setPurchasePrice] = useState("");
@@ -134,13 +141,7 @@ export default function MortgageCalculator() {
 
   const chartData: ChartData<"doughnut", number[], string> | null = result
     ? {
-        labels: [
-          "Principal & interest",
-          "Property taxes",
-          "Homeowners insurance",
-          "Mortgage insurance",
-          "HOA",
-        ],
+        labels: [copy.principal, copy.taxes, copy.homeowners, locale === "es" ? "Seguro hipotecario" : "Mortgage insurance", "HOA"],
         datasets: [
           {
             data: [
@@ -231,7 +232,7 @@ export default function MortgageCalculator() {
     <div className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-lg">
       <form onSubmit={submit} className="grid grid-cols-1 gap-6 sm:grid-cols-2" noValidate>
         <fieldset className="sm:col-span-2">
-          <legend className="block text-sm font-medium">Loan Type</legend>
+          <legend className="block text-sm font-medium">{copy.loanType}</legend>
           <div className="mt-2 grid grid-cols-2 gap-2 rounded-lg bg-gray-100 p-1">
             {(["conventional", "fha"] as LoanType[]).map((type) => (
               <label
@@ -248,19 +249,19 @@ export default function MortgageCalculator() {
                   onChange={() => selectLoanType(type)}
                   className="sr-only"
                 />
-                {type === "conventional" ? "Conventional" : "FHA"}
+                {type === "conventional" ? copy.conventional : "FHA"}
               </label>
             ))}
           </div>
         </fieldset>
 
         <div>
-          <label htmlFor="purchasePrice" className="block text-sm font-medium">Purchase Price</label>
+          <label htmlFor="purchasePrice" className="block text-sm font-medium">{copy.purchasePrice}</label>
           <input
             id="purchasePrice"
             type="number"
             inputMode="decimal"
-            placeholder="Purchase Price"
+            placeholder={copy.purchasePrice}
             value={purchasePrice}
             onChange={(event) => setPurchasePrice(event.target.value)}
             className={inputClassName(Boolean(errors.purchasePrice))}
@@ -268,29 +269,29 @@ export default function MortgageCalculator() {
             step="any"
             {...fieldProps("purchasePrice")}
           />
-          <div id="purchasePrice-error"><FieldError message={errors.purchasePrice} /></div>
+          <div id="purchasePrice-error"><FieldError message={errors.purchasePrice ? (locale === "es" ? copy.fieldError : errors.purchasePrice) : undefined} /></div>
         </div>
 
         <div>
-          <label htmlFor="downPaymentType" className="block text-sm font-medium">Down Payment Type</label>
+          <label htmlFor="downPaymentType" className="block text-sm font-medium">{copy.downType}</label>
           <select
             id="downPaymentType"
             value={downPaymentType}
             onChange={(event) => setDownPaymentType(event.target.value as DownPaymentType)}
             className="mt-1 w-full rounded border border-gray-300 p-2"
           >
-            <option value="percentage">Percentage (%)</option>
-            <option value="fixed">Fixed Amount ($)</option>
+            <option value="percentage">{copy.percentage}</option>
+            <option value="fixed">{copy.fixed}</option>
           </select>
         </div>
 
         <div>
-          <label htmlFor="downPayment" className="block text-sm font-medium">Down Payment</label>
+          <label htmlFor="downPayment" className="block text-sm font-medium">{copy.down}</label>
           <input
             id="downPayment"
             type="number"
             inputMode="decimal"
-            placeholder={downPaymentType === "percentage" ? "Down Payment (%)" : "Down Payment ($)"}
+            placeholder={`${copy.down} ${downPaymentType === "percentage" ? "(%)" : "($)"}`}
             value={downPayment}
             onChange={(event) => setDownPayment(event.target.value)}
             onBlur={(event) => clampDownPayment(loanType, firstTimeHomebuyer, event.target.value)}
@@ -299,7 +300,7 @@ export default function MortgageCalculator() {
             step="any"
             {...fieldProps("downPayment")}
           />
-          <div id="downPayment-error"><FieldError message={errors.downPayment} /></div>
+          <div id="downPayment-error"><FieldError message={errors.downPayment ? (locale === "es" ? copy.fieldError : errors.downPayment) : undefined} /></div>
           {loanType === "conventional" && (
             <div className="mt-2">
               <label className="flex items-center gap-2 text-sm text-gray-700">
@@ -309,22 +310,22 @@ export default function MortgageCalculator() {
                   onChange={(event) => toggleFirstTimeHomebuyer(event.target.checked)}
                   className="h-4 w-4 rounded border-gray-300"
                 />
-                First-time homebuyer
+                {copy.firstTime}
               </label>
               <p className="mt-1 text-xs leading-relaxed text-gray-600">
-                3% down conventional financing is subject to borrower and program eligibility.
+                {copy.firstTimeNote}
               </p>
             </div>
           )}
         </div>
 
         <div>
-          <label htmlFor="interestRate" className="block text-sm font-medium">Interest Rate (%)</label>
+          <label htmlFor="interestRate" className="block text-sm font-medium">{copy.rate}</label>
           <input
             id="interestRate"
             type="number"
             inputMode="decimal"
-            placeholder="Interest Rate (%)"
+            placeholder={copy.rate}
             value={interestRate}
             onChange={(event) => setInterestRate(event.target.value)}
             className={inputClassName(Boolean(errors.interestRate))}
@@ -332,16 +333,16 @@ export default function MortgageCalculator() {
             step="0.001"
             {...fieldProps("interestRate")}
           />
-          <div id="interestRate-error"><FieldError message={errors.interestRate} /></div>
+          <div id="interestRate-error"><FieldError message={errors.interestRate ? (locale === "es" ? copy.fieldError : errors.interestRate) : undefined} /></div>
         </div>
 
         <div>
-          <label htmlFor="loanTerm" className="block text-sm font-medium">Loan Term (Years)</label>
+          <label htmlFor="loanTerm" className="block text-sm font-medium">{copy.term}</label>
           <input
             id="loanTerm"
             type="number"
             inputMode="decimal"
-            placeholder="Loan Term (Years)"
+            placeholder={copy.term}
             value={loanTerm}
             onChange={(event) => setLoanTerm(event.target.value)}
             className={inputClassName(Boolean(errors.loanTerm))}
@@ -350,11 +351,11 @@ export default function MortgageCalculator() {
             step="1"
             {...fieldProps("loanTerm")}
           />
-          <div id="loanTerm-error"><FieldError message={errors.loanTerm} /></div>
+          <div id="loanTerm-error"><FieldError message={errors.loanTerm ? (locale === "es" ? copy.fieldError : errors.loanTerm) : undefined} /></div>
         </div>
 
         <div>
-          <label htmlFor="propertyTaxRate" className="block text-sm font-medium">Property Tax Rate (%)</label>
+          <label htmlFor="propertyTaxRate" className="block text-sm font-medium">{copy.tax}</label>
           <input
             id="propertyTaxRate"
             type="number"
@@ -366,11 +367,11 @@ export default function MortgageCalculator() {
             min="0"
             {...fieldProps("propertyTaxRate")}
           />
-          <div id="propertyTaxRate-error"><FieldError message={errors.propertyTaxRate} /></div>
+          <div id="propertyTaxRate-error"><FieldError message={errors.propertyTaxRate ? (locale === "es" ? copy.fieldError : errors.propertyTaxRate) : undefined} /></div>
         </div>
 
         <div>
-          <label htmlFor="homeInsurance" className="block text-sm font-medium">Homeowners Insurance ($/month)</label>
+          <label htmlFor="homeInsurance" className="block text-sm font-medium">{copy.insurance}</label>
           <input
             id="homeInsurance"
             type="number"
@@ -382,11 +383,11 @@ export default function MortgageCalculator() {
             min="0"
             {...fieldProps("homeInsurance")}
           />
-          <div id="homeInsurance-error"><FieldError message={errors.homeInsurance} /></div>
+          <div id="homeInsurance-error"><FieldError message={errors.homeInsurance ? (locale === "es" ? copy.fieldError : errors.homeInsurance) : undefined} /></div>
         </div>
 
         <div>
-          <label htmlFor="hoaFees" className="block text-sm font-medium">HOA Fees ($/month)</label>
+          <label htmlFor="hoaFees" className="block text-sm font-medium">{copy.hoa}</label>
           <input
             id="hoaFees"
             type="number"
@@ -398,27 +399,27 @@ export default function MortgageCalculator() {
             min="0"
             {...fieldProps("hoaFees")}
           />
-          <div id="hoaFees-error"><FieldError message={errors.hoaFees} /></div>
+          <div id="hoaFees-error"><FieldError message={errors.hoaFees ? (locale === "es" ? copy.fieldError : errors.hoaFees) : undefined} /></div>
         </div>
 
         <div className="sm:col-span-2">
           <button type="submit" className="mt-4 w-full rounded bg-blue-500 p-3 text-white hover:bg-blue-700">
-            Calculate
+            {copy.calculate}
           </button>
         </div>
       </form>
 
       {hasSubmitted && !result && (
         <p className="mt-5 rounded-md bg-red-50 p-3 text-sm text-red-700" role="alert">
-          Please correct the highlighted fields to calculate your estimate.
+          {copy.correct}
         </p>
       )}
 
-      {result && <MortgageResults loanType={loanType} result={result} />}
+      {result && <MortgageResults loanType={loanType} result={result} locale={locale} />}
 
       {chartData && (
         <div className="mt-6">
-          <h3 className="mb-4 text-lg font-bold">Estimated Monthly Payment Breakdown</h3>
+          <h3 className="mb-4 text-lg font-bold">{copy.chart}</h3>
           <div className="h-80">
             <Doughnut data={chartData} options={chartOptions} />
           </div>
@@ -427,14 +428,14 @@ export default function MortgageCalculator() {
 
       {amortizationSchedule.length > 0 && (
         <div className="mt-6 max-h-64 overflow-y-auto">
-          <h3 className="mb-4 text-lg font-bold">Amortization Schedule</h3>
+          <h3 className="mb-4 text-lg font-bold">{copy.amortization}</h3>
           <table className="w-full table-auto text-left text-sm">
             <thead>
               <tr>
-                <th className="px-4 py-2">Month</th>
-                <th className="px-4 py-2">Interest Payment</th>
-                <th className="px-4 py-2">Principal Payment</th>
-                <th className="px-4 py-2">Remaining Balance</th>
+                <th className="px-4 py-2">{copy.month}</th>
+                <th className="px-4 py-2">{copy.interestPayment}</th>
+                <th className="px-4 py-2">{copy.principalPayment}</th>
+                <th className="px-4 py-2">{copy.balance}</th>
               </tr>
             </thead>
             <tbody>
@@ -453,27 +454,26 @@ export default function MortgageCalculator() {
 
       {result && (
         <p className="mt-6 border-t pt-4 text-xs leading-relaxed text-gray-600">
-          This calculator provides an educational estimate only. Actual payments, rates, taxes,
-          insurance, mortgage insurance, closing costs, and qualification requirements may vary.
-          This is not a Loan Estimate, approval, or commitment to lend.
+          {copy.disclaimer}
         </p>
       )}
     </div>
   );
 }
 
-function MortgageResults({ loanType, result }: { loanType: LoanType; result: MortgageResult }) {
+function MortgageResults({ loanType, result, locale }: { loanType: LoanType; result: MortgageResult; locale: Locale }) {
+  const copy = mortgageCopy[locale];
   const breakdown = [
-    ["Principal and interest", result.principalAndInterest],
-    ["Property taxes", result.propertyTaxes],
-    ["Homeowners insurance", result.homeownersInsurance],
-    [loanType === "fha" ? "Estimated FHA mortgage insurance" : "Estimated PMI", result.mortgageInsurance],
+    [copy.principal, result.principalAndInterest],
+    [copy.taxes, result.propertyTaxes],
+    [copy.homeowners, result.homeownersInsurance],
+    [loanType === "fha" ? copy.fhaInsurance : copy.pmi, result.mortgageInsurance],
     ["HOA", result.hoa],
   ] as const;
 
   return (
     <section className="mt-6 rounded-lg bg-blue-50 p-5" aria-live="polite">
-      <p className="text-sm font-medium text-gray-700">Estimated Total Monthly Housing Payment</p>
+      <p className="text-sm font-medium text-gray-700">{copy.total}</p>
       <p className="mt-1 text-3xl font-bold text-blue-700">{formatCurrency(result.totalMonthlyPayment)}</p>
 
       <dl className="mt-5 space-y-2 border-t border-blue-100 pt-4">
@@ -488,22 +488,22 @@ function MortgageResults({ loanType, result }: { loanType: LoanType; result: Mor
       <dl className="mt-5 space-y-2 border-t border-blue-100 pt-4">
         <div className="flex items-center justify-between gap-4">
           <dt className="text-sm text-gray-700">
-            Down payment ({percentageFormatter.format(result.downPaymentPercentage)}%)
+            {copy.downPayment} ({percentageFormatter.format(result.downPaymentPercentage)}%)
           </dt>
           <dd className="font-medium">{formatCurrency(result.downPaymentAmount)}</dd>
         </div>
         <div className="flex items-center justify-between gap-4">
-          <dt className="text-sm text-gray-700">Base loan amount</dt>
+          <dt className="text-sm text-gray-700">{copy.baseLoan}</dt>
           <dd className="font-medium">{formatCurrency(result.baseLoanAmount)}</dd>
         </div>
         {loanType === "fha" && (
           <>
             <div className="flex items-center justify-between gap-4">
-              <dt className="text-sm text-gray-700">Upfront FHA MIP (financed)</dt>
+              <dt className="text-sm text-gray-700">{copy.upfrontMip}</dt>
               <dd className="font-medium">{formatCurrency(result.upfrontFhaMip)}</dd>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <dt className="text-sm text-gray-700">Financed FHA loan amount</dt>
+              <dt className="text-sm text-gray-700">{copy.financedLoan}</dt>
               <dd className="font-medium">{formatCurrency(result.financedLoanAmount)}</dd>
             </div>
           </>
@@ -512,20 +512,18 @@ function MortgageResults({ loanType, result }: { loanType: LoanType; result: Mor
 
       {loanType === "fha" && (
         <p className="mt-3 text-xs leading-relaxed text-gray-600">
-          The upfront FHA MIP is financed into the loan balance and is not added as a monthly expense.
+          {copy.fhaNote}
         </p>
       )}
 
       {loanType === "conventional" && result.mortgageInsurance > 0 && (
         <p className="mt-4 text-xs leading-relaxed text-gray-600">
-          Estimated PMI based on an assumed annual rate. Actual PMI depends on credit, loan structure,
-          and the mortgage-insurance provider.
+          {copy.pmiNote}
         </p>
       )}
       {loanType === "fha" && (
         <p className="mt-4 text-xs leading-relaxed text-gray-600">
-          Estimated FHA mortgage insurance uses an assumed annual rate. Actual FHA MIP may vary based
-          on the loan amount, term, loan-to-value ratio, and current FHA requirements.
+          {copy.fhaEstimateNote}
         </p>
       )}
     </section>

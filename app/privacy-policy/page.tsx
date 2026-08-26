@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import type { Locale } from "@/lib/i18n/config";
+import { localizedAlternates, localizedPath } from "@/lib/i18n/config";
 
 const TITLE = "Privacy Policy | Joshua Lopez";
 const DESCRIPTION =
@@ -8,14 +10,14 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: {
-    canonical: "/privacy-policy",
-  },
+  alternates: localizedAlternates("privacy", "en"),
   openGraph: {
     type: "website",
     title: TITLE,
     description: DESCRIPTION,
     url: "/privacy-policy",
+    locale: "en_US",
+    alternateLocale: "es_US",
   },
   twitter: {
     card: "summary",
@@ -30,7 +32,8 @@ const paragraphClasses = "mt-4 text-base leading-7 text-slate-700";
 const listClasses =
   "mt-4 list-disc space-y-2 pl-6 text-base leading-7 text-slate-700 marker:text-blue-700";
 
-export default function PrivacyPolicyPage() {
+export function PrivacyPolicyContent({ locale }: { locale: Locale }) {
+  if (locale === "es") return <SpanishPrivacyPolicy />;
   return (
     <div className="bg-white">
       <section className="border-b border-blue-100 bg-blue-50">
@@ -463,4 +466,60 @@ export default function PrivacyPolicyPage() {
       </article>
     </div>
   );
+}
+
+function SpanishPrivacyPolicy() {
+  return (
+    <div className="bg-white">
+      <section className="border-b border-blue-100 bg-blue-50">
+        <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+          <p className="text-sm font-semibold uppercase tracking-wide text-blue-800">Legal</p>
+          <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-blue-950 sm:text-5xl">Política de privacidad</h1>
+          <p className="mt-4 text-base font-semibold text-slate-700">Fecha de entrada en vigor: 18 de agosto de 2026</p>
+        </div>
+      </section>
+      <article className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <p className="text-base leading-7 text-slate-700">Esta Política de privacidad explica cómo Joshua Lopez y Got Mortgage Solutions, nombre comercial de Limestone Investments, Inc. (“Got Mortgage Solutions”, “nosotros” o “nuestro”), recopilan, usan, divulgan y protegen la información personal obtenida por medio de joshualopezloans.com, formularios en línea, anuncios, llamadas, mensajes de texto, correos electrónicos y consultas hipotecarias o relacionadas con el valor acumulado de una vivienda.</p>
+        <p className={paragraphClasses}>Joshua Lopez es originador de préstamos hipotecarios en California, NMLS #2230624. Los servicios hipotecarios se ofrecen por medio de Got Mortgage Solutions, nombre comercial de Limestone Investments, Inc., NMLS #2448495.</p>
+
+        <SpanishSection title="Información que recopilamos" paragraphs={["Según la manera en que interactúe con nosotros, podemos recopilar las siguientes categorías de información:"]} items={["Información de contacto, como nombre, teléfono, correo electrónico, dirección postal y método de contacto preferido.", "Información de la propiedad, como dirección, valor estimado, saldo hipotecario, ocupación y tipo de propiedad.", "Información sobre la consulta, como sus metas de compra, refinanciamiento o valor acumulado, plazo, tipo de préstamo y monto solicitado.", "Información financiera preliminar que usted decida proporcionar, como ingresos, empleo, puntaje crediticio estimado, deudas, pago inicial y saldo hipotecario.", "Información técnica y de uso, como dirección IP, navegador, dispositivo, páginas visitadas, fuente de referencia e interacción con anuncios.", "Preferencias de comunicación y registros de consentimiento, incluidos fecha, hora, URL de origen y versión del aviso de consentimiento.", "Contenido de comunicaciones, incluidos formularios, correos, mensajes de texto y datos de llamadas."]} />
+        <p className={paragraphClasses}>No proporcione números de Seguro Social, cuentas bancarias, tarjetas, contraseñas ni otros datos financieros confidenciales mediante formularios generales del sitio. Si se necesita esa información para una solicitud, se solicitará mediante un portal seguro autorizado.</p>
+
+        <SpanishSection title="Cómo recopilamos la información" paragraphs={["Podemos recopilar información:"]} items={["Directamente de usted cuando completa un formulario, llama, envía un mensaje o correo, agenda una consulta o inicia una solicitud.", "Automáticamente mediante cookies, registros del servidor, herramientas analíticas y tecnologías similares.", "De proveedores que alojan o procesan formularios, comunicaciones, análisis, publicidad o solicitudes hipotecarias.", "De fuentes públicas, profesionales o de referencia permitidas por la ley.", "De plataformas publicitarias cuando responde a uno de nuestros anuncios."]} />
+        <SpanishSection title="Cómo usamos la información personal" paragraphs={["Podemos usar la información personal para:"]} items={["Responder a su consulta y comunicarnos por teléfono, mensaje de texto o correo electrónico.", "Evaluar de forma preliminar las necesidades hipotecarias, de compra, venta o valor acumulado que usted indicó.", "Programar consultas y proporcionar la información solicitada.", "Mantener registros de consultas, comunicaciones y consentimiento.", "Operar, mantener, proteger y mejorar el sitio web.", "Medir el tráfico, las conversiones y el rendimiento publicitario.", "Cumplir obligaciones legales, regulatorias, de licencia, auditoría y conservación de registros.", "Prevenir fraude, abuso, amenazas de seguridad u otras actividades prohibidas.", "Establecer, ejercer o defender derechos legales."]} />
+        <p className={paragraphClasses}>La información enviada en un formulario general no constituye una solicitud de crédito completa, aprobación, compromiso de préstamo ni asesoría legal o tributaria.</p>
+
+        <SpanishSection title="Cómo divulgamos la información personal" paragraphs={["Podemos divulgar información personal a:"]} items={["Got Mortgage Solutions, Limestone Investments, Inc. y personal o contratistas autorizados que apoyan su consulta.", "Proveedores que ofrecen alojamiento, formularios, CRM, correo electrónico, telefonía, mensajes de texto, análisis, publicidad, seguridad o portales de solicitud.", "Prestamistas, mayoristas, procesadores, agentes de escrow, compañías de título, tasadores u otros participantes cuando usted solicita continuar con una operación.", "Asesores profesionales, auditores, aseguradoras y representantes legales.", "Autoridades gubernamentales, reguladores o terceros cuando la ley lo exija o para proteger derechos y seguridad.", "Una entidad sucesora en relación con una fusión, reorganización, transferencia o venta comercial permitida."]} />
+        <p className={paragraphClasses}>Los proveedores solo deben usar la información para prestar los servicios contratados o según lo permita la ley.</p>
+
+        <SpanishSection title="Venta e intercambio de información personal" paragraphs={["No vendemos información personal a cambio de dinero. Algunas herramientas de análisis o publicidad pueden considerarse “intercambio” o publicidad conductual entre contextos bajo ciertas leyes de privacidad de California.", "Cuando corresponda, puede solicitar excluirse de ese intercambio o publicidad. También puede usar las señales de preferencia compatibles con su navegador. No usamos conscientemente información personal sensible para inferir características ni vendemos o intercambiamos conscientemente información de menores de 16 años."]} />
+        <SpanishSection title="Cookies y análisis" paragraphs={["El sitio puede usar cookies y tecnologías similares para funciones esenciales, seguridad, medición de tráfico, análisis y atribución publicitaria. Puede limitar cookies desde su navegador, aunque algunas funciones podrían no operar correctamente.", "Podemos usar proveedores como Google Analytics o servicios equivalentes. Esos proveedores pueden recopilar información técnica conforme a sus propias políticas."]} />
+
+        <SpanishSection title="Llamadas telefónicas y mensajes de texto" paragraphs={["Si proporciona un número de teléfono y da su consentimiento, Joshua Lopez y Got Mortgage Solutions pueden comunicarse con usted sobre su consulta hipotecaria o de vivienda mediante llamadas y mensajes de texto, incluso con tecnología automatizada o voz artificial o pregrabada cuando el aviso de consentimiento así lo indique.", "La frecuencia de los mensajes varía y pueden aplicarse tarifas de mensajes y datos. El consentimiento no es una condición para comprar propiedades, bienes o servicios.", "Para dejar de recibir mensajes de texto, responda STOP. Para obtener ayuda, responda HELP o llame al 323-762-9786. Una solicitud de exclusión puede tardar un tiempo razonable en procesarse; aún podremos enviar mensajes no promocionales permitidos o exigidos por la ley."]} />
+        <p className={paragraphClasses}>Mantendremos registros razonables del consentimiento y de las solicitudes de exclusión, incluidos la fecha, hora, fuente, idioma y versión del aviso cuando estén disponibles.</p>
+        <SpanishSection title="Comunicaciones por correo electrónico" paragraphs={["Puede cancelar correos promocionales mediante el enlace de cancelación incluido en el mensaje o contactándonos. Aun así, podremos enviar comunicaciones operativas o relacionadas con una solicitud cuando la ley lo permita."]} />
+        <SpanishSection title="Conservación de datos" paragraphs={["Conservamos la información durante el tiempo razonablemente necesario para responder a consultas, prestar servicios, mantener registros comerciales y de consentimiento, cumplir obligaciones legales y resolver disputas. El período depende del tipo de información y del motivo por el que fue recopilada.", "Cuando la información ya no sea necesaria, procuraremos eliminarla, anonimizarla o almacenarla de forma segura conforme a nuestras prácticas de conservación."]} />
+        <SpanishSection title="Seguridad de los datos" paragraphs={["Usamos medidas administrativas, técnicas y físicas razonables para proteger la información. Ningún sistema de transmisión o almacenamiento es completamente seguro, por lo que no podemos garantizar seguridad absoluta.", "Use únicamente los portales seguros indicados para entregar información confidencial de una solicitud hipotecaria."]} />
+
+        <SpanishSection title="Derechos de privacidad en California" paragraphs={["Según la ley aplicable y sujeto a excepciones, los residentes de California pueden tener derecho a:"]} items={["Saber qué categorías y datos personales específicos se recopilaron, usaron o divulgaron.", "Solicitar acceso o una copia de la información personal.", "Solicitar la eliminación de información personal.", "Solicitar la corrección de información inexacta.", "Excluirse de la venta o el intercambio de información personal.", "Limitar ciertos usos de información personal sensible, cuando corresponda.", "No recibir trato discriminatorio por ejercer derechos de privacidad."]} />
+        <p className={paragraphClasses}>Para presentar una solicitud, llame al 323-762-9786 o use nuestro <Link href={localizedPath("es", "/contact")} className="font-semibold text-blue-800 underline decoration-blue-300 underline-offset-2 hover:text-blue-950">formulario de contacto</Link>. Podemos solicitar información razonable para verificar su identidad y autoridad. También puede designar a un agente autorizado conforme a la ley.</p>
+        <p className={paragraphClasses}>Podemos rechazar o limitar una solicitud cuando una excepción legal lo permita. Si denegamos una solicitud, explicaremos el motivo y las opciones disponibles, si corresponde.</p>
+        <SpanishSection title="Privacidad de menores" paragraphs={["El sitio y los servicios no están dirigidos a menores de 18 años. No recopilamos conscientemente información personal de menores de 13 años. Si cree que un menor proporcionó información, comuníquese con nosotros para que podamos revisarla y eliminarla cuando corresponda."]} />
+        <SpanishSection title="Sitios y servicios de terceros" paragraphs={["El sitio puede enlazar a portales hipotecarios, plataformas de propiedades u otros servicios de terceros. Sus prácticas de privacidad se rigen por sus propias políticas. Revise esas políticas antes de proporcionar información."]} />
+        <SpanishSection title="Cambios a esta política" paragraphs={["Podemos actualizar esta Política de privacidad por cambios en nuestros servicios, tecnología, prácticas de datos u obligaciones legales. Publicaremos la versión actualizada en esta página con una fecha de entrada en vigor revisada."]} />
+
+        <h2 className={headingClasses}>Contáctenos</h2>
+        <p className={paragraphClasses}>Para preguntas, solicitudes de privacidad o solicitudes de exclusión de comunicaciones, contacte a:</p>
+        <address className="mt-4 not-italic text-base leading-7 text-slate-700"><strong className="block text-slate-900">Joshua Lopez, NMLS #2230624</strong><strong className="block text-slate-900">Got Mortgage Solutions, nombre comercial de Limestone Investments, Inc., NMLS #2448495</strong><strong className="block text-slate-900">Teléfono: <a href="tel:+13237629786" className="text-blue-800 underline decoration-blue-300 underline-offset-2 hover:text-blue-950">323-762-9786</a></strong><strong className="block text-slate-900">Sitio web: <Link href="/es/contact" className="break-words text-blue-800 underline decoration-blue-300 underline-offset-2 hover:text-blue-950">https://www.joshualopezloans.com/es/contact</Link></strong></address>
+      </article>
+    </div>
+  );
+}
+
+function SpanishSection({ title, paragraphs = [], items }: { title: string; paragraphs?: string[]; items?: string[] }) {
+  return <><h2 className={headingClasses}>{title}</h2>{paragraphs.map((paragraph) => <p key={paragraph} className={paragraphClasses}>{paragraph}</p>)}{items && <ul className={listClasses}>{items.map((item) => <li key={item}>{item}</li>)}</ul>}</>;
+}
+
+export default function PrivacyPolicyPage() {
+  return <PrivacyPolicyContent locale="en" />;
 }

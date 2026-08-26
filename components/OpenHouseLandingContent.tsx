@@ -1,9 +1,10 @@
 "use client";
 
-import { useForm, ValidationError } from "@formspree/react";
+import { useForm } from "@formspree/react";
 import Image from "next/image";
 import { useState } from "react";
 import SmsConsentDisclosure from "@/components/SmsConsentDisclosure";
+import type { Locale } from "@/lib/i18n/config";
 
 // Property configuration — update here to reuse this page for a different listing.
 const property = {
@@ -20,8 +21,6 @@ const property = {
   // export if one becomes available; keep the local /public/pictures path.
   heroImage: "/pictures/Evergreen%20Crest.jpg",
 };
-
-type Language = "en" | "es";
 
 const translations = {
   en: {
@@ -76,6 +75,7 @@ const translations = {
     paymentBreakdownOptions: ["Yes, send it to me", "No, thank you"],
     submitButton: "Send Me the Property Details",
     submittingButton: "Sending...",
+    formError: "There was a problem sending the form. Please try again.",
     successHeading: "You're all set.",
     successCopy:
       "I received your information. I'll follow up with the property details and anything else you requested.",
@@ -141,6 +141,7 @@ const translations = {
     paymentBreakdownOptions: ["Sí, envíemelo", "No, gracias"],
     submitButton: "Envíeme la Información",
     submittingButton: "Enviando...",
+    formError: "Hubo un problema al enviar el formulario. Inténtelo de nuevo.",
     successHeading: "Listo.",
     successCopy:
       "Recibí su información. Le enviaré los detalles de la propiedad y cualquier otra información que haya solicitado.",
@@ -156,14 +157,14 @@ const translations = {
   },
 } as const;
 
-export default function OpenHouseLandingContent() {
-  const [language, setLanguage] = useState<Language>("en");
+export default function OpenHouseLandingContent({ locale = "en" }: { locale?: Locale }) {
   const [state, handleSubmit] = useForm("mppanlwb");
   const [smsConsent, setSmsConsent] = useState(false);
   const [wantsBreakdown, setWantsBreakdown] = useState("");
-  const t = translations[language];
-  const requestedBreakdown =
-    wantsBreakdown === "Yes, send it to me" || wantsBreakdown === "Sí, envíemelo";
+  const language = locale;
+  const setLanguage = (_locale: Locale) => undefined;
+  const t = translations[locale];
+  const requestedBreakdown = wantsBreakdown === "yes";
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-900">
@@ -189,7 +190,7 @@ export default function OpenHouseLandingContent() {
             <div
               role="group"
               aria-label="Language / Idioma"
-              className="inline-flex items-center gap-1 self-start rounded-full border border-slate-200 bg-slate-100 p-1 text-sm font-semibold sm:self-auto"
+              className="hidden"
             >
               <button
                 type="button"
@@ -435,11 +436,6 @@ export default function OpenHouseLandingContent() {
                       required
                       className="w-full rounded-xl border border-slate-300 px-3 py-3 text-base outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600"
                     />
-                    <ValidationError
-                      prefix="Email"
-                      field="email"
-                      errors={state.errors}
-                    />
                   </div>
 
                   <div>
@@ -464,7 +460,7 @@ export default function OpenHouseLandingContent() {
                       {t.realtorQuestion} *
                     </legend>
                     <div className="grid grid-cols-2 gap-3">
-                      {t.realtorOptions.map((option) => (
+                      {t.realtorOptions.map((option, index) => (
                         <label
                           key={option}
                           className="flex min-h-12 cursor-pointer items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-3 text-center text-sm font-semibold text-slate-700 shadow-sm transition has-[:checked]:border-blue-600 has-[:checked]:bg-blue-50 has-[:checked]:text-blue-800 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-blue-600 has-[:focus-visible]:ring-offset-2"
@@ -472,7 +468,7 @@ export default function OpenHouseLandingContent() {
                           <input
                             type="radio"
                             name="workingWithRealtor"
-                            value={option}
+                            value={index === 0 ? "yes" : "no"}
                             required
                             className="sr-only"
                           />
@@ -487,7 +483,7 @@ export default function OpenHouseLandingContent() {
                       {t.preapprovalQuestion} *
                     </legend>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                      {t.preapprovalOptions.map((option) => (
+                      {t.preapprovalOptions.map((option, index) => (
                         <label
                           key={option}
                           className="flex min-h-12 cursor-pointer items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-3 text-center text-sm font-semibold text-slate-700 shadow-sm transition has-[:checked]:border-blue-600 has-[:checked]:bg-blue-50 has-[:checked]:text-blue-800 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-blue-600 has-[:focus-visible]:ring-offset-2"
@@ -495,7 +491,7 @@ export default function OpenHouseLandingContent() {
                           <input
                             type="radio"
                             name="preapprovalStatus"
-                            value={option}
+                            value={["approved", "no", "in-progress", "cash"][index]}
                             required
                             className="sr-only"
                           />
@@ -510,7 +506,9 @@ export default function OpenHouseLandingContent() {
                       {t.paymentBreakdownQuestion} *
                     </legend>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                      {t.paymentBreakdownOptions.map((option) => (
+                      {t.paymentBreakdownOptions.map((option, index) => {
+                        const value = index === 0 ? "yes" : "no";
+                        return (
                         <label
                           key={option}
                           className="flex min-h-12 cursor-pointer items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-3 text-center text-sm font-semibold text-slate-700 shadow-sm transition has-[:checked]:border-blue-600 has-[:checked]:bg-blue-50 has-[:checked]:text-blue-800 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-blue-600 has-[:focus-visible]:ring-offset-2"
@@ -518,22 +516,23 @@ export default function OpenHouseLandingContent() {
                           <input
                             type="radio"
                             name="wantsPaymentBreakdown"
-                            value={option}
-                            checked={wantsBreakdown === option}
-                            onChange={() => setWantsBreakdown(option)}
+                            value={value}
+                            checked={wantsBreakdown === value}
+                            onChange={() => setWantsBreakdown(value)}
                             required
                             className="sr-only"
                           />
                           {option}
                         </label>
-                      ))}
+                        );
+                      })}
                     </div>
                   </fieldset>
 
                   <input
                     type="hidden"
                     name="preferredLanguage"
-                    value={language === "en" ? "English" : "Spanish"}
+                    value={locale === "en" ? "en-US" : "es-US"}
                   />
                   <input
                     type="hidden"
@@ -550,12 +549,18 @@ export default function OpenHouseLandingContent() {
                     name="propertyMLS"
                     value={property.mls}
                   />
+                  <input type="hidden" name="locale" value={locale === "en" ? "en-US" : "es-US"} />
+                  <input type="hidden" name="sourceRoute" value={locale === "en" ? "/landing/open-house" : "/es/landing/open-house"} />
+                  <input type="hidden" name="formVersion" value="open-house-bilingual-v1" />
 
                   <SmsConsentDisclosure
                     id="open-house-sms-consent"
                     checked={smsConsent}
                     onChange={setSmsConsent}
+                    locale={locale}
                   />
+
+                  {state.errors && !state.submitting && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">{t.formError}</p>}
 
                   <button
                     type="submit"

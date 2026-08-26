@@ -15,11 +15,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/calculator` },
     { url: `${SITE_URL}/contact` },
     { url: `${SITE_URL}/privacy-policy` },
+    { url: `${SITE_URL}/es` },
+    { url: `${SITE_URL}/es/real-estate` },
+    { url: `${SITE_URL}/es/calculator` },
+    { url: `${SITE_URL}/es/contact` },
+    { url: `${SITE_URL}/es/privacy-policy` },
     { url: `${SITE_URL}/blog` },
     { url: `${SITE_URL}/landing/rent-vs-own` },
     { url: `${SITE_URL}/landing/book-a-call` },
     // Intentionally excluded — see the sitemap report for reasoning:
-    // /loan (third-party application embed, noindex)
+    // /loan and /es/loan (application handoff, noindex)
+    // /landing/open-house and /es/landing/open-house (campaign pages, noindex)
     // /landing/access-equity, /landing/heloc-access (direct-mail-only, noindex)
     // /api/* (not HTML)
   ];

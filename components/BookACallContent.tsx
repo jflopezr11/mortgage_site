@@ -69,7 +69,7 @@ export default function BookACallContent() {
         <div id="hubspotForm" className="w-full" />
 
         <a
-          href="sms:6267228876?&body=Hi%20Josh%2C%20I%27m%20interested%20in%20getting%20prequalified!"
+          href="sms:3237629786?&body=Hi%20Josh%2C%20I%27m%20interested%20in%20getting%20prequalified!"
           className="block md:hidden mt-8 bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded-lg shadow transition duration-200"
         >
           📱 Text Joshua Now
