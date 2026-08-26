@@ -73,7 +73,7 @@ export default function RootLayout({
           `}
         </Script>
 
-        <SiteChrome locale={locale}>{children}</SiteChrome>
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

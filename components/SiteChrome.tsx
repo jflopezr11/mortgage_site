@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { getCommonMessages } from "@/lib/i18n/common";
 import {
+  localeFromPathname,
   localizedPath,
   localizedRoutePairs,
   type Locale,
@@ -33,27 +34,21 @@ function getLanguageSwitchPath(pathname: string, locale: Locale, service: string
   return `${pair[targetLocale]}${query}`;
 }
 
-export default function SiteChrome({
-  children,
-  locale,
-}: {
-  children: React.ReactNode;
-  locale: Locale;
-}) {
+export default function SiteChrome({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [serviceParam, setServiceParam] = useState("");
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const locale = localeFromPathname(pathname);
+  const serviceParam = pathname.endsWith("/contact")
+    ? searchParams.get("service") ?? ""
+    : "";
   const messages = getCommonMessages(locale);
   const navigation = getNavigation(locale);
   const languageHref = getLanguageSwitchPath(pathname, locale, serviceParam);
 
   useEffect(() => {
-    if (pathname.endsWith("/contact")) {
-      setServiceParam(new URLSearchParams(window.location.search).get("service") ?? "");
-    } else {
-      setServiceParam("");
-    }
-  }, [pathname]);
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   const closeMenu = () => setIsMenuOpen(false);
 

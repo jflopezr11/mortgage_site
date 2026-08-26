@@ -6,6 +6,10 @@ export type Locale = (typeof locales)[number];
 export const DEFAULT_LOCALE: Locale = "en";
 export const LOCALE_HEADER = "x-site-locale";
 
+export function localeFromPathname(pathname: string): Locale {
+  return pathname === "/es" || pathname.startsWith("/es/") ? "es" : "en";
+}
+
 export const localizedRoutePairs = {
   home: { en: "/", es: "/es" },
   realEstate: { en: "/real-estate", es: "/es/real-estate" },
