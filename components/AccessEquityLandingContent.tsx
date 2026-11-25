@@ -1,12 +1,12 @@
 "use client";
 
-import { useForm, ValidationError } from "@formspree/react";
+import { useCrmForm, ValidationError } from "@/components/useCrmForm";
 import Image from "next/image";
 import { useState } from "react";
 import SmsConsentDisclosure from "@/components/SmsConsentDisclosure";
 
 export default function AccessEquityLandingContent() {
-  const [state, handleSubmit] = useForm("xdaqkwde");
+  const [state, handleSubmit] = useCrmForm("access-equity");
   const [smsConsent, setSmsConsent] = useState(false);
 
   return (

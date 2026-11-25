@@ -1,12 +1,12 @@
 "use client";
 
-import { useForm, ValidationError } from "@formspree/react";
+import { useCrmForm, ValidationError } from "@/components/useCrmForm";
 import Image from "next/image";
 import { useState } from "react";
 import SmsConsentDisclosure from "@/components/SmsConsentDisclosure";
 
 export default function HelocAccessLandingContent() {
-  const [state, handleSubmit] = useForm("mdkqdnrp");
+  const [state, handleSubmit] = useCrmForm("heloc-access");
   const [smsConsent, setSmsConsent] = useState(false);
 
   return (

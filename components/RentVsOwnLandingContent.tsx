@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 import RentVsOwnCalculator from "@/components/RentVsOwnCalculator";
-import { useForm, ValidationError } from '@formspree/react';
+import { useCrmForm, ValidationError } from '@/components/useCrmForm';
 import Image from 'next/image';
 
 export default function RentVsOwnLandingContent() {
   const [formComplete, setFormComplete] = useState(false);
-  const [state, handleSubmit] = useForm("xpwrbyzz");
+  const [state, handleSubmit] = useCrmForm("rent-vs-own");
 
   useEffect(() => {
     if (state.succeeded) {

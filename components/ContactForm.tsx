@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useForm } from "@formspree/react";
+import { useCrmForm } from "@/components/useCrmForm";
 import SmsConsentDisclosure from "@/components/SmsConsentDisclosure";
 import { getContactMessages, type LocalizedOption } from "@/lib/i18n/contact";
 import type { Locale } from "@/lib/i18n/config";
@@ -45,7 +45,7 @@ export default function ContactForm({ initialService, locale = "en" }: { initial
   const [formData, setFormData] = useState<FormData>({ ...INITIAL_FORM_DATA, preferredLanguage: locale });
   const [smsConsent, setSmsConsent] = useState(false);
   const [pageUrl, setPageUrl] = useState("");
-  const [state, handleSubmit] = useForm("xeeydvzk");
+  const [state, handleSubmit] = useCrmForm("contact");
   useEffect(() => setPageUrl(window.location.href), []);
   const updateField = (name: keyof FormData, value: string) => setFormData((previous) => ({ ...previous, [name]: value }));
   const selectLeadType = (value: LeadType) => { setLeadType(value); setAmbiguousRealEstate(false); setFormData((previous) => ({ ...previous, ...EMPTY_TYPE_FIELDS })); };

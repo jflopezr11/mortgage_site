@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "@formspree/react";
+import { useCrmForm } from "@/components/useCrmForm";
 import Image from "next/image";
 import { useState } from "react";
 import SmsConsentDisclosure from "@/components/SmsConsentDisclosure";
@@ -158,7 +158,7 @@ const translations = {
 } as const;
 
 export default function OpenHouseLandingContent({ locale = "en" }: { locale?: Locale }) {
-  const [state, handleSubmit] = useForm("mppanlwb");
+  const [state, handleSubmit] = useCrmForm("open-house");
   const [smsConsent, setSmsConsent] = useState(false);
   const [wantsBreakdown, setWantsBreakdown] = useState("");
   const language = locale;

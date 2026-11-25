@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@formspree/react": "^3.0.0",
     "@portabletext/react": "^3.2.1",
     "@sanity/client": "^6.29.0",
     "@sanity/icons": "^3.7.0",
