@@ -1,11 +1,16 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 
 type FormState = { submitting: boolean; succeeded: boolean; errors: string | null };
 
+// Must match HONEYPOT_FIELD in app/api/website-leads/route.ts.
+export const HONEYPOT_FIELD = "website";
+
 export function useCrmForm(formKind: string): [FormState, (event: FormEvent<HTMLFormElement>) => Promise<void>] {
   const [state, setState] = useState<FormState>({ submitting: false, succeeded: false, errors: null });
+  // When the form appeared, so the server can tell instant bot submissions from people.
+  const startedAt = useRef(Date.now());
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -17,7 +22,7 @@ export function useCrmForm(formKind: string): [FormState, (event: FormEvent<HTML
       const response = await fetch("/api/website-leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ formKind, fields }),
+        body: JSON.stringify({ formKind, fields, elapsedMs: Date.now() - startedAt.current }),
       });
       if (!response.ok) throw new Error(`Submission failed (${response.status})`);
       setState({ submitting: false, succeeded: true, errors: null });
@@ -27,6 +32,18 @@ export function useCrmForm(formKind: string): [FormState, (event: FormEvent<HTML
   };
 
   return [state, handleSubmit];
+}
+
+// Spam trap: invisible to people and screen readers, but bots that fill every field fill this one too.
+export function HoneypotField() {
+  return (
+    <div aria-hidden="true" style={{ position: "absolute", left: "-10000px", width: 1, height: 1, overflow: "hidden" }}>
+      <label>
+        Leave this field empty
+        <input type="text" name={HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" defaultValue="" />
+      </label>
+    </div>
+  );
 }
 
 export function ValidationError({ errors }: { errors: string | null; field?: string; prefix?: string }) {

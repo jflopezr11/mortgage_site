@@ -1,6 +1,6 @@
 "use client";
 
-import { useCrmForm } from "@/components/useCrmForm";
+import { useCrmForm, HoneypotField } from "@/components/useCrmForm";
 import Image from "next/image";
 import { useState } from "react";
 import SmsConsentDisclosure from "@/components/SmsConsentDisclosure";
@@ -385,7 +385,7 @@ export default function OpenHouseLandingContent({ locale = "en" }: { locale?: Lo
                   )}
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-5"><HoneypotField />
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                       <label

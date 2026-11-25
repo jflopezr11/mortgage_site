@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import RentVsOwnCalculator from "@/components/RentVsOwnCalculator";
-import { useCrmForm, ValidationError } from '@/components/useCrmForm';
+import { useCrmForm, ValidationError, HoneypotField } from '@/components/useCrmForm';
 import Image from 'next/image';
 
 export default function RentVsOwnLandingContent() {
@@ -64,6 +64,7 @@ export default function RentVsOwnLandingContent() {
               onSubmit={handleSubmit}
               className="space-y-4"
             >
+              <HoneypotField />
               <div>
                 <label className="block text-sm font-medium mb-1">
                   First Name <span className="text-red-500">*</span>

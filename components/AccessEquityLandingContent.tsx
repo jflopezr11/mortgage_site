@@ -1,6 +1,6 @@
 "use client";
 
-import { useCrmForm, ValidationError } from "@/components/useCrmForm";
+import { useCrmForm, ValidationError, HoneypotField } from "@/components/useCrmForm";
 import Image from "next/image";
 import { useState } from "react";
 import SmsConsentDisclosure from "@/components/SmsConsentDisclosure";
@@ -310,7 +310,7 @@ export default function AccessEquityLandingContent() {
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4"><HoneypotField />
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                       <label className="mb-1 block text-xs font-medium text-slate-700">

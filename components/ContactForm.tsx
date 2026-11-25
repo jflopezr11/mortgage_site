@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useCrmForm } from "@/components/useCrmForm";
+import { useCrmForm, HoneypotField } from "@/components/useCrmForm";
 import SmsConsentDisclosure from "@/components/SmsConsentDisclosure";
 import { getContactMessages, type LocalizedOption } from "@/lib/i18n/contact";
 import type { Locale } from "@/lib/i18n/config";
@@ -59,7 +59,7 @@ export default function ContactForm({ initialService, locale = "en" }: { initial
   const select = (label: string, name: keyof FormData, options: LocalizedOption[]) => <SelectField label={label} name={name} value={formData[name]} onChange={updateField} options={options} choose={copy.choose} />;
   const text = (label: string, name: keyof FormData, placeholder?: string, autoComplete?: string) => <TextField label={label} name={name} value={formData[name]} onChange={updateField} placeholder={placeholder} autoComplete={autoComplete} />;
 
-  return <form onSubmit={handleSubmit} className="space-y-8">
+  return <form onSubmit={handleSubmit} className="space-y-8"><HoneypotField />
     <fieldset className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7"><legend className="px-1 text-lg font-bold text-blue-950">{copy.helpLegend} <span aria-hidden="true">*</span></legend>{ambiguousRealEstate && <p className="mt-2 rounded-xl bg-blue-50 px-4 py-3 text-sm font-semibold text-blue-900">{copy.ambiguous}</p>}<div className="mt-4 grid gap-3 sm:grid-cols-2">{help.map(([value, [label, description]]) => { const checked = leadType === value; return <label key={value} htmlFor={`help-option-${value}`} className={`flex cursor-pointer flex-col rounded-2xl border-2 p-4 transition focus-within:ring-2 focus-within:ring-blue-300 ${checked ? "border-blue-800 bg-blue-50" : "border-slate-200 bg-white hover:border-blue-300"}`}><span className="flex items-center gap-2 font-bold text-blue-950"><input type="radio" id={`help-option-${value}`} name="helpType" value={value} checked={checked} onChange={() => selectLeadType(value)} required aria-required="true" className="h-4 w-4 border-slate-300 text-blue-800 focus:ring-blue-700" />{label}</span><span className="mt-1.5 text-sm leading-5 text-slate-600">{description}</span></label>; })}</div></fieldset>
 
     {leadType && <>

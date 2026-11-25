@@ -1,7 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 const FORM_KINDS = new Set(["contact", "access-equity", "heloc-access", "rent-vs-own", "open-house"]);
-const EXCLUDED_FIELDS = new Set(["firstName", "lastName", "email", "phone", "_subject"]);
+const HONEYPOT_FIELD = "website"; // must match components/useCrmForm.tsx
+const EXCLUDED_FIELDS = new Set(["firstName", "lastName", "email", "phone", "_subject", HONEYPOT_FIELD]);
+// People take longer than this to fill in a form; bots post instantly or skip the page entirely.
+const MIN_FILL_MS = 2500;
 
 export async function POST(request: NextRequest) {
   const origin = request.headers.get("origin");
@@ -24,7 +27,7 @@ export async function POST(request: NextRequest) {
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
     return NextResponse.json({ error: "Invalid submission" }, { status: 400 });
   }
-  const { formKind, fields } = payload as Record<string, unknown>;
+  const { formKind, fields, elapsedMs } = payload as Record<string, unknown>;
   if (typeof formKind !== "string" || !FORM_KINDS.has(formKind) || !fields || typeof fields !== "object" || Array.isArray(fields)) {
     return NextResponse.json({ error: "Invalid submission" }, { status: 400 });
   }
@@ -34,6 +37,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
   const stringEntries = entries as [string, string][];
+
+  // Spam check: a filled trap field, or a submission faster than a person could type (or with no
+  // timing at all, i.e. not sent by our form), gets a fake success so the bot moves on, and is dropped.
+  const trapFilled = String(values[HONEYPOT_FIELD] || "").trim() !== "";
+  const tooFast = typeof elapsedMs !== "number" || elapsedMs < MIN_FILL_MS;
+  if (trapFilled || tooFast) {
+    console.warn(`Dropped likely spam on ${formKind} form: ${trapFilled ? "trap field filled" : "submitted too fast"}`);
+    return NextResponse.json({ ok: true }, { status: 201 });
+  }
 
   const firstName = String(values.firstName || "").trim();
   const lastName = String(values.lastName || "").trim();
