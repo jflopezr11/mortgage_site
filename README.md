@@ -36,7 +36,6 @@ Next.js: For all the awesome server-side rendering and frontend goodness.
 React: Because building interactive UI is a breeze with it.
 Tailwind CSS: To make the site look clean and modern with minimal effort.
 Chart.js: So you can enjoy the sweet, sweet mortgage data visualizations.
-HubSpot API: For getting in touch, because who doesn’t love a smooth contact form?
 Vercel: Because this site’s fast and secure, and I like my sites like I like my coffee—strong and reliable.
 
 ## 👀 Want to Peek at the Code?

@@ -22,7 +22,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/es/privacy-policy` },
     { url: `${SITE_URL}/blog` },
     { url: `${SITE_URL}/landing/rent-vs-own` },
-    { url: `${SITE_URL}/landing/book-a-call` },
     // Intentionally excluded — see the sitemap report for reasoning:
     // /loan and /es/loan (application handoff, noindex)
     // /landing/open-house and /es/landing/open-house (campaign pages, noindex)
