@@ -64,7 +64,8 @@ export async function POST(request: NextRequest) {
     });
     if (!response.ok) throw new Error(`CRM returned ${response.status}`);
     return NextResponse.json({ ok: true }, { status: 201 });
-  } catch {
+  } catch (error) {
+    console.error("CRM lead delivery failed:", error instanceof Error ? error.message : "Unknown error");
     return NextResponse.json({ error: "Lead delivery failed" }, { status: 502 });
   }
 }
